@@ -315,8 +315,8 @@ export default function HostedZoneDetail({ params }: { params: Promise<{ id: str
   if (!user || (!zone && loading)) {
     return (
       <div className="p-8 max-w-7xl mx-auto">
-        <div className="flex items-center gap-2 text-[#545B64]">
-          <RefreshCw size={16} className="animate-spin text-[#EC7211]" />
+        <div className="flex items-center gap-2 text-[#414d5c]">
+          <RefreshCw size={16} className="animate-spin text-[#0972d3]" />
           <span>Loading hosted zone details...</span>
         </div>
       </div>
@@ -341,15 +341,15 @@ export default function HostedZoneDetail({ params }: { params: Promise<{ id: str
       <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3 mb-4">
         <div>
           <div className="flex items-center gap-3">
-            <h1 className="text-[22px] font-bold text-[#16191F] tracking-tight">{zone.name}</h1>
+            <h1 className="text-[22px] font-bold text-[#0f141a] tracking-tight">{zone.name}</h1>
             {zone.private_zone ? (
               <span className="aws-badge-private">Private hosted zone</span>
             ) : (
               <span className="aws-badge-public">Public hosted zone</span>
             )}
           </div>
-          <p className="text-[12px] text-[#545B64] mt-0.5">
-            Hosted zone ID: <span className="font-mono text-[#16191F]">{zone.id}</span>
+          <p className="text-[12px] text-[#414d5c] mt-0.5">
+            Hosted zone ID: <span className="font-mono text-[#0f141a]">{zone.id}</span>
           </p>
         </div>
 
@@ -385,10 +385,10 @@ export default function HostedZoneDetail({ params }: { params: Promise<{ id: str
       {/* Hosted Zone Details Panel (AWS Cloudscape Card) */}
       <div className="aws-panel mb-6 overflow-hidden">
         <div className="aws-panel-header">
-          <h2 className="text-[14px] font-bold text-[#16191F]">Hosted zone details</h2>
+          <h2 className="text-[14px] font-bold text-[#0f141a]">Hosted zone details</h2>
           <button 
             onClick={() => setShowEditZone(true)}
-            className="text-[12px] text-[#0073BB] hover:underline flex items-center gap-1 font-semibold"
+            className="text-[12px] text-[#0972d3] hover:underline flex items-center gap-1 font-semibold"
           >
             Edit
           </button>
@@ -396,12 +396,12 @@ export default function HostedZoneDetail({ params }: { params: Promise<{ id: str
         
         <div className="p-5 grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 text-[13px]">
           <div>
-            <div className="text-[12px] font-bold text-[#545B64] uppercase mb-1">Hosted zone ID</div>
+            <div className="text-[12px] font-bold text-[#414d5c] uppercase mb-1">Hosted zone ID</div>
             <div className="flex items-center gap-2">
-              <span className="font-mono text-[#16191F] font-semibold">{zone.id}</span>
+              <span className="font-mono text-[#0f141a] font-semibold">{zone.id}</span>
               <button 
                 onClick={copyZoneId}
-                className="text-[#545B64] hover:text-[#16191F] p-0.5 transition-colors"
+                className="text-[#414d5c] hover:text-[#0f141a] p-0.5 transition-colors"
                 title="Copy hosted zone ID"
               >
                 {copiedId ? <Check size={13} className="text-[#1D8102]" /> : <Copy size={13} />}
@@ -410,30 +410,30 @@ export default function HostedZoneDetail({ params }: { params: Promise<{ id: str
           </div>
 
           <div>
-            <div className="text-[12px] font-bold text-[#545B64] uppercase mb-1">Type</div>
+            <div className="text-[12px] font-bold text-[#414d5c] uppercase mb-1">Type</div>
             <div>
               {zone.private_zone ? "Private hosted zone" : "Public hosted zone"}
             </div>
           </div>
 
           <div>
-            <div className="text-[12px] font-bold text-[#545B64] uppercase mb-1">Record count</div>
-            <div className="font-semibold text-[#16191F]">{zone.record_set_count}</div>
+            <div className="text-[12px] font-bold text-[#414d5c] uppercase mb-1">Record count</div>
+            <div className="font-semibold text-[#0f141a]">{zone.record_set_count}</div>
           </div>
 
           <div>
-            <div className="text-[12px] font-bold text-[#545B64] uppercase mb-1">Description</div>
-            <div className="text-[#545B64]">{zone.comment || "-"}</div>
+            <div className="text-[12px] font-bold text-[#414d5c] uppercase mb-1">Description</div>
+            <div className="text-[#414d5c]">{zone.comment || "-"}</div>
           </div>
         </div>
 
         {/* Name Servers subsection if available */}
         {nameServers.length > 0 && (
-          <div className="px-5 py-3 bg-[#FAFAFA] border-t border-[#EAEDED] flex flex-col sm:flex-row sm:items-start gap-3">
-            <div className="text-[12px] font-bold text-[#545B64] uppercase sm:w-40 flex-shrink-0">
+          <div className="px-5 py-3 bg-[#f9fafb] border-t border-[#EAEDED] flex flex-col sm:flex-row sm:items-start gap-3">
+            <div className="text-[12px] font-bold text-[#414d5c] uppercase sm:w-40 flex-shrink-0">
               Name servers (NS):
             </div>
-            <div className="flex-1 flex flex-wrap gap-x-6 gap-y-1 font-mono text-[12px] text-[#0073BB]">
+            <div className="flex-1 flex flex-wrap gap-x-6 gap-y-1 font-mono text-[12px] text-[#0972d3]">
               {nameServers.map((ns: string, idx: number) => (
                 <div key={idx} className="flex items-center gap-1">
                   <span className="text-[#879196]">{idx + 1}.</span>
@@ -451,20 +451,20 @@ export default function HostedZoneDetail({ params }: { params: Promise<{ id: str
           onClick={() => setActiveTab("records")}
           className={`pb-2.5 font-bold cursor-pointer transition-colors relative ${
             activeTab === "records"
-              ? "text-[#16191F] border-b-[3px] border-[#EC7211] -mb-[1px]"
-              : "text-[#545B64] hover:text-[#16191F]"
+              ? "text-[#0f141a] border-b-[3px] border-[#0972d3] -mb-[1px]"
+              : "text-[#414d5c] hover:text-[#0f141a]"
           }`}
         >
           <span>Records</span>
-          <span className="ml-1.5 text-[11px] font-normal text-[#545B64]">({records.length})</span>
+          <span className="ml-1.5 text-[11px] font-normal text-[#414d5c]">({records.length})</span>
         </button>
 
         <button
           onClick={() => setActiveTab("dnssec")}
           className={`pb-2.5 font-bold cursor-pointer transition-colors flex items-center gap-1.5 ${
             activeTab === "dnssec"
-              ? "text-[#16191F] border-b-[3px] border-[#EC7211] -mb-[1px]"
-              : "text-[#545B64] hover:text-[#16191F]"
+              ? "text-[#0f141a] border-b-[3px] border-[#0972d3] -mb-[1px]"
+              : "text-[#414d5c] hover:text-[#0f141a]"
           }`}
         >
           <Shield size={13} />
@@ -475,8 +475,8 @@ export default function HostedZoneDetail({ params }: { params: Promise<{ id: str
           onClick={() => setActiveTab("tags")}
           className={`pb-2.5 font-bold cursor-pointer transition-colors flex items-center gap-1.5 ${
             activeTab === "tags"
-              ? "text-[#16191F] border-b-[3px] border-[#EC7211] -mb-[1px]"
-              : "text-[#545B64] hover:text-[#16191F]"
+              ? "text-[#0f141a] border-b-[3px] border-[#0972d3] -mb-[1px]"
+              : "text-[#414d5c] hover:text-[#0f141a]"
           }`}
         >
           <Tag size={13} />
@@ -488,8 +488,8 @@ export default function HostedZoneDetail({ params }: { params: Promise<{ id: str
       {activeTab === "dnssec" && (
         <div className="aws-panel p-6 mb-6 text-center">
           <Shield size={28} className="mx-auto text-[#879196] mb-2" />
-          <h3 className="font-bold text-[#16191F] text-[15px] mb-1">DNSSEC signing is not enabled</h3>
-          <p className="text-[#545B64] text-[13px] max-w-md mx-auto mb-4">
+          <h3 className="font-bold text-[#0f141a] text-[15px] mb-1">DNSSEC signing is not enabled</h3>
+          <p className="text-[#414d5c] text-[13px] max-w-md mx-auto mb-4">
             DNSSEC validates DNS responses to protect your domain from DNS spoofing and man-in-the-middle attacks.
           </p>
           <button className="aws-btn-secondary" onClick={() => addNotification("info", "DNSSEC simulation active.")}>
@@ -501,12 +501,12 @@ export default function HostedZoneDetail({ params }: { params: Promise<{ id: str
       {activeTab === "tags" && (
         <div className="aws-panel p-6 mb-6">
           <div className="flex justify-between items-center mb-3">
-            <h3 className="font-bold text-[#16191F] text-[14px]">Hosted zone tags (0)</h3>
+            <h3 className="font-bold text-[#0f141a] text-[14px]">Hosted zone tags (0)</h3>
             <button className="aws-btn-secondary" onClick={() => addNotification("info", "Tags editor active.")}>
               Manage tags
             </button>
           </div>
-          <p className="text-[#545B64] text-[13px]">
+          <p className="text-[#414d5c] text-[13px]">
             No tags associated with this hosted zone. Use tags to track costs and categorize AWS resources.
           </p>
         </div>
@@ -518,8 +518,8 @@ export default function HostedZoneDetail({ params }: { params: Promise<{ id: str
           {/* Records Action Bar */}
           <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3 mb-3">
             <div className="flex items-center gap-2">
-              <h2 className="text-[16px] font-bold text-[#16191F]">Records</h2>
-              <span className="text-[13px] text-[#545B64]">({filteredRecords.length})</span>
+              <h2 className="text-[16px] font-bold text-[#0f141a]">Records</h2>
+              <span className="text-[13px] text-[#414d5c]">({filteredRecords.length})</span>
             </div>
 
             <div className="flex items-center gap-2 flex-wrap">
@@ -556,10 +556,10 @@ export default function HostedZoneDetail({ params }: { params: Promise<{ id: str
           {/* Records Table Container */}
           <div className="aws-panel overflow-hidden">
             {/* Filter Bar */}
-            <div className="p-3 border-b border-[#D5DBDB] bg-[#FAFAFA] flex items-center justify-between gap-3 flex-wrap">
+            <div className="p-3 border-b border-[#D5DBDB] bg-[#f9fafb] flex items-center justify-between gap-3 flex-wrap">
               <div className="flex items-center gap-3 flex-1 min-w-[280px]">
                 <div className="relative flex-1 max-w-md">
-                  <Search className="absolute left-2.5 top-1/2 transform -translate-y-1/2 text-[#545B64]" size={14} />
+                  <Search className="absolute left-2.5 top-1/2 transform -translate-y-1/2 text-[#414d5c]" size={14} />
                   <input
                     type="text"
                     placeholder="Search records by name or value"
@@ -570,7 +570,7 @@ export default function HostedZoneDetail({ params }: { params: Promise<{ id: str
                   {search && (
                     <button 
                       onClick={() => setSearch("")}
-                      className="absolute right-2 top-1/2 transform -translate-y-1/2 text-[#879196] hover:text-[#16191F] text-xs font-bold"
+                      className="absolute right-2 top-1/2 transform -translate-y-1/2 text-[#879196] hover:text-[#0f141a] text-xs font-bold"
                     >
                       ✕
                     </button>
@@ -578,7 +578,7 @@ export default function HostedZoneDetail({ params }: { params: Promise<{ id: str
                 </div>
 
                 <div className="flex items-center gap-1.5">
-                  <label className="text-[12px] font-bold text-[#545B64] uppercase">Type:</label>
+                  <label className="text-[12px] font-bold text-[#414d5c] uppercase">Type:</label>
                   <select
                     value={typeFilter}
                     onChange={(e) => setTypeFilter(e.target.value)}
@@ -591,7 +591,7 @@ export default function HostedZoneDetail({ params }: { params: Promise<{ id: str
                 </div>
               </div>
 
-              <div className="text-[12px] text-[#545B64]">
+              <div className="text-[12px] text-[#414d5c]">
                 {selectedIds.size > 0 ? `${selectedIds.size} of ${filteredRecords.length} selected` : `${filteredRecords.length} total`}
               </div>
             </div>
@@ -608,7 +608,7 @@ export default function HostedZoneDetail({ params }: { params: Promise<{ id: str
                         onChange={toggleSelectAll}
                         disabled={deletableRecords.length === 0}
                         aria-label="Select all deletable records"
-                        className="w-3.5 h-3.5 rounded-[2px] border-[#879196] text-[#0073BB] focus:ring-[#0073BB] disabled:opacity-30 cursor-pointer"
+                        className="w-3.5 h-3.5 rounded-[8px] border-[#879196] text-[#0972d3] focus:ring-[#0972d3] disabled:opacity-30 cursor-pointer"
                       />
                     </th>
                     <th className="aws-table-header min-w-[180px]">Record name</th>
@@ -624,21 +624,21 @@ export default function HostedZoneDetail({ params }: { params: Promise<{ id: str
                 <tbody>
                   {loading ? (
                     <tr>
-                      <td colSpan={9} className="px-4 py-12 text-center text-[#545B64]">
+                      <td colSpan={9} className="px-4 py-12 text-center text-[#414d5c]">
                         <div className="flex items-center justify-center gap-2">
-                          <RefreshCw size={16} className="animate-spin text-[#EC7211]" />
+                          <RefreshCw size={16} className="animate-spin text-[#0972d3]" />
                           <span>Loading DNS records...</span>
                         </div>
                       </td>
                     </tr>
                   ) : paginatedRecords.length === 0 ? (
                     <tr>
-                      <td colSpan={9} className="px-4 py-12 text-center text-[#545B64]">
+                      <td colSpan={9} className="px-4 py-12 text-center text-[#414d5c]">
                         <div className="max-w-md mx-auto">
-                          <div className="text-[15px] font-bold text-[#16191F] mb-1">
+                          <div className="text-[15px] font-bold text-[#0f141a] mb-1">
                             {records.length === 0 ? "No DNS records" : "No matching records"}
                           </div>
-                          <p className="text-[13px] text-[#545B64] mb-4">
+                          <p className="text-[13px] text-[#414d5c] mb-4">
                             {records.length === 0
                               ? "Create records to route traffic to your IP addresses, AWS resources, or other domains."
                               : "No records match the current filter criteria."}
@@ -674,10 +674,10 @@ export default function HostedZoneDetail({ params }: { params: Promise<{ id: str
                               onChange={() => toggleSelect(record.id)}
                               disabled={isSystem}
                               aria-label={`Select record ${record.name}`}
-                              className="w-3.5 h-3.5 rounded-[2px] border-[#879196] text-[#0073BB] focus:ring-[#0073BB] disabled:opacity-30 cursor-pointer"
+                              className="w-3.5 h-3.5 rounded-[8px] border-[#879196] text-[#0972d3] focus:ring-[#0972d3] disabled:opacity-30 cursor-pointer"
                             />
                           </td>
-                          <td className="aws-table-cell font-bold text-[#16191F]">{record.name}</td>
+                          <td className="aws-table-cell font-bold text-[#0f141a]">{record.name}</td>
                           <td className="aws-table-cell">
                             <span className="aws-badge-type">
                               {record.type}
@@ -687,7 +687,7 @@ export default function HostedZoneDetail({ params }: { params: Promise<{ id: str
                           <td className="aws-table-cell text-[#879196]">-</td>
                           <td className="aws-table-cell text-[#879196]">No</td>
                           <td className="aws-table-cell font-mono text-[12px]">{record.ttl}</td>
-                          <td className="aws-table-cell font-mono text-[12px] text-[#0073BB] whitespace-pre-line leading-relaxed">
+                          <td className="aws-table-cell font-mono text-[12px] text-[#0972d3] whitespace-pre-line leading-relaxed">
                             {record.value}
                           </td>
                           <td className="aws-table-cell text-right" onClick={(e) => e.stopPropagation()}>
@@ -695,11 +695,11 @@ export default function HostedZoneDetail({ params }: { params: Promise<{ id: str
                               <div className="flex items-center justify-end gap-2">
                                 <button
                                   onClick={() => openEditRecord(record)}
-                                  className="text-[#0073BB] hover:underline font-bold text-[12px]"
+                                  className="text-[#0972d3] hover:underline font-bold text-[12px]"
                                 >
                                   Edit
                                 </button>
-                                <span className="text-[11px] text-[#879196] bg-[#FAFAFA] border border-[#D5DBDB] px-1.5 py-0.5 rounded-[2px]" title="Default apex record created by Route 53">
+                                <span className="text-[11px] text-[#879196] bg-[#f9fafb] border border-[#D5DBDB] px-1.5 py-0.5 rounded-[8px]" title="Default apex record created by Route 53">
                                   System
                                 </span>
                               </div>
@@ -707,7 +707,7 @@ export default function HostedZoneDetail({ params }: { params: Promise<{ id: str
                               <div className="flex items-center justify-end gap-3">
                                 <button
                                   onClick={() => openEditRecord(record)}
-                                  className="text-[#0073BB] hover:underline font-bold text-[12px] inline-flex items-center gap-1"
+                                  className="text-[#0972d3] hover:underline font-bold text-[12px] inline-flex items-center gap-1"
                                 >
                                   <Pencil size={11} />
                                   <span>Edit</span>
@@ -731,7 +731,7 @@ export default function HostedZoneDetail({ params }: { params: Promise<{ id: str
             </div>
 
             {/* Pagination Footer */}
-            <div className="p-3 bg-[#FAFAFA] flex justify-between items-center text-[12px] text-[#545B64] border-t border-[#D5DBDB]">
+            <div className="p-3 bg-[#f9fafb] flex justify-between items-center text-[12px] text-[#414d5c] border-t border-[#D5DBDB]">
               <div className="flex items-center gap-3">
                 <span>
                   {filteredRecords.length === 0 ? "0 records" : `${startIndex + 1}-${Math.min(startIndex + pageSize, filteredRecords.length)} of ${filteredRecords.length} records`}
@@ -784,15 +784,15 @@ export default function HostedZoneDetail({ params }: { params: Promise<{ id: str
       {/* Quick Create Record Modal */}
       {showCreate && (
         <div className="fixed inset-0 bg-black/60 flex items-center justify-center z-[100] p-4 animate-in fade-in duration-150">
-          <div className="bg-white rounded-[2px] shadow-2xl w-full max-w-2xl flex flex-col max-h-[90vh] border border-[#D5DBDB]">
-            <div className="px-6 py-3.5 border-b border-[#D5DBDB] flex justify-between items-center bg-[#FAFAFA]">
+          <div className="bg-white rounded-[8px] shadow-2xl w-full max-w-2xl flex flex-col max-h-[90vh] border border-[#D5DBDB]">
+            <div className="px-6 py-3.5 border-b border-[#D5DBDB] flex justify-between items-center bg-[#f9fafb]">
               <div>
-                <h2 className="text-[16px] font-bold text-[#16191F]">Quick create record</h2>
-                <p className="text-[12px] text-[#545B64]">Define routing to direct user requests for your domain or subdomain.</p>
+                <h2 className="text-[16px] font-bold text-[#0f141a]">Quick create record</h2>
+                <p className="text-[12px] text-[#414d5c]">Define routing to direct user requests for your domain or subdomain.</p>
               </div>
               <button 
                 onClick={() => setShowCreate(false)} 
-                className="text-[#545B64] hover:text-[#16191F] text-sm"
+                className="text-[#414d5c] hover:text-[#0f141a] text-sm"
               >
                 ✕
               </button>
@@ -801,7 +801,7 @@ export default function HostedZoneDetail({ params }: { params: Promise<{ id: str
             <form onSubmit={handleCreateRecord} className="overflow-y-auto flex-1 p-6 space-y-4">
               {/* Record Name */}
               <div>
-                <label className="block text-[13px] font-bold text-[#16191F] mb-1">
+                <label className="block text-[13px] font-bold text-[#0f141a] mb-1">
                   Record name
                 </label>
                 <div className="flex items-center gap-2">
@@ -812,17 +812,17 @@ export default function HostedZoneDetail({ params }: { params: Promise<{ id: str
                     className="flex-1 aws-input text-right"
                     placeholder="e.g. www or api"
                   />
-                  <span className="text-[13px] font-bold text-[#545B64] select-none bg-[#FAFAFA] border border-[#D5DBDB] px-2 py-1.5 rounded-[2px]">
+                  <span className="text-[13px] font-bold text-[#414d5c] select-none bg-[#f9fafb] border border-[#D5DBDB] px-2 py-1.5 rounded-[8px]">
                     .{zone.name}
                   </span>
                 </div>
-                <p className="text-[11px] text-[#545B64] mt-1">Leave blank to create a record for the zone apex ({zone.name}).</p>
+                <p className="text-[11px] text-[#414d5c] mt-1">Leave blank to create a record for the zone apex ({zone.name}).</p>
               </div>
 
               {/* Record Type & TTL Grid */}
               <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
                 <div>
-                  <label className="block text-[13px] font-bold text-[#16191F] mb-1">
+                  <label className="block text-[13px] font-bold text-[#0f141a] mb-1">
                     Record type
                   </label>
                   <select
@@ -843,7 +843,7 @@ export default function HostedZoneDetail({ params }: { params: Promise<{ id: str
                 </div>
 
                 <div>
-                  <label className="block text-[13px] font-bold text-[#16191F] mb-1">
+                  <label className="block text-[13px] font-bold text-[#0f141a] mb-1">
                     TTL (Seconds)
                   </label>
                   <input
@@ -861,7 +861,7 @@ export default function HostedZoneDetail({ params }: { params: Promise<{ id: str
 
               {/* Routing Policy */}
               <div>
-                <label className="block text-[13px] font-bold text-[#16191F] mb-1">
+                <label className="block text-[13px] font-bold text-[#0f141a] mb-1">
                   Routing policy
                 </label>
                 <select
@@ -880,13 +880,13 @@ export default function HostedZoneDetail({ params }: { params: Promise<{ id: str
 
               {/* Value / Route traffic to */}
               <div>
-                <label className="block text-[13px] font-bold text-[#16191F] mb-1">
+                <label className="block text-[13px] font-bold text-[#0f141a] mb-1">
                   Value/Route traffic to
                 </label>
                 <textarea
                   value={newRecord.value}
                   onChange={(e) => setNewRecord({...newRecord, value: e.target.value})}
-                  className="w-full h-28 px-3 py-2 border border-[#879196] rounded-[2px] focus:outline-none focus:border-[#0073BB] focus:ring-1 focus:ring-[#0073BB] text-[13px] font-mono leading-relaxed"
+                  className="w-full h-28 px-3 py-2 border border-[#879196] rounded-[8px] focus:outline-none focus:border-[#0972d3] focus:ring-1 focus:ring-[#0972d3] text-[13px] font-mono leading-relaxed"
                   placeholder={
                     newRecord.type === "A" ? "192.0.2.1\n198.51.100.2" :
                     newRecord.type === "CNAME" ? "target-domain.example.com." :
@@ -896,7 +896,7 @@ export default function HostedZoneDetail({ params }: { params: Promise<{ id: str
                   }
                   required
                 />
-                <p className="text-[11px] text-[#545B64] mt-1">Enter one value per line. Route 53 will return multiple IP addresses for multi-answer queries.</p>
+                <p className="text-[11px] text-[#414d5c] mt-1">Enter one value per line. Route 53 will return multiple IP addresses for multi-answer queries.</p>
               </div>
               
               <div className="flex justify-end gap-2 border-t border-[#EAEDED] pt-4 mt-6">
@@ -924,15 +924,15 @@ export default function HostedZoneDetail({ params }: { params: Promise<{ id: str
       {/* Edit Hosted Zone Modal */}
       {showEditZone && (
         <div className="fixed inset-0 bg-black/60 flex items-center justify-center z-[100] p-4 animate-in fade-in duration-150">
-          <div className="bg-white rounded-[2px] shadow-2xl w-full max-w-lg flex flex-col max-h-[90vh] border border-[#D5DBDB]">
-            <div className="px-6 py-3.5 border-b border-[#D5DBDB] flex justify-between items-center bg-[#FAFAFA]">
-              <h2 className="text-[16px] font-bold text-[#16191F]">Edit hosted zone details</h2>
-              <button onClick={() => setShowEditZone(false)} className="text-[#545B64] hover:text-[#16191F] text-sm">✕</button>
+          <div className="bg-white rounded-[8px] shadow-2xl w-full max-w-lg flex flex-col max-h-[90vh] border border-[#D5DBDB]">
+            <div className="px-6 py-3.5 border-b border-[#D5DBDB] flex justify-between items-center bg-[#f9fafb]">
+              <h2 className="text-[16px] font-bold text-[#0f141a]">Edit hosted zone details</h2>
+              <button onClick={() => setShowEditZone(false)} className="text-[#414d5c] hover:text-[#0f141a] text-sm">✕</button>
             </div>
             
             <form onSubmit={handleEditZone} className="overflow-y-auto flex-1 p-6 space-y-4">
               <div>
-                <label className="block text-[13px] font-bold text-[#16191F] mb-1">Domain name</label>
+                <label className="block text-[13px] font-bold text-[#0f141a] mb-1">Domain name</label>
                 <input
                   type="text"
                   value={editZoneData.name}
@@ -943,7 +943,7 @@ export default function HostedZoneDetail({ params }: { params: Promise<{ id: str
               </div>
 
               <div>
-                <label className="block text-[13px] font-bold text-[#16191F] mb-1">Description - optional</label>
+                <label className="block text-[13px] font-bold text-[#0f141a] mb-1">Description - optional</label>
                 <input
                   type="text"
                   value={editZoneData.comment}
@@ -954,7 +954,7 @@ export default function HostedZoneDetail({ params }: { params: Promise<{ id: str
               </div>
 
               <div>
-                <span className="block text-[13px] font-bold text-[#16191F] mb-2">Type</span>
+                <span className="block text-[13px] font-bold text-[#0f141a] mb-2">Type</span>
                 <div className="space-y-2">
                   <label className="flex items-center gap-2 cursor-pointer text-[13px]">
                     <input
@@ -962,9 +962,9 @@ export default function HostedZoneDetail({ params }: { params: Promise<{ id: str
                       name="edit-type"
                       checked={!editZoneData.private_zone}
                       onChange={() => setEditZoneData({...editZoneData, private_zone: false})}
-                      className="w-3.5 h-3.5 text-[#0073BB] border-[#879196] focus:ring-[#0073BB]"
+                      className="w-3.5 h-3.5 text-[#0972d3] border-[#879196] focus:ring-[#0972d3]"
                     />
-                    <span className="font-semibold text-[#16191F]">Public hosted zone</span>
+                    <span className="font-semibold text-[#0f141a]">Public hosted zone</span>
                   </label>
                   <label className="flex items-center gap-2 cursor-pointer text-[13px]">
                     <input
@@ -972,9 +972,9 @@ export default function HostedZoneDetail({ params }: { params: Promise<{ id: str
                       name="edit-type"
                       checked={editZoneData.private_zone}
                       onChange={() => setEditZoneData({...editZoneData, private_zone: true})}
-                      className="w-3.5 h-3.5 text-[#0073BB] border-[#879196] focus:ring-[#0073BB]"
+                      className="w-3.5 h-3.5 text-[#0972d3] border-[#879196] focus:ring-[#0972d3]"
                     />
-                    <span className="font-semibold text-[#16191F]">Private hosted zone for Amazon VPC</span>
+                    <span className="font-semibold text-[#0f141a]">Private hosted zone for Amazon VPC</span>
                   </label>
                 </div>
               </div>
@@ -1004,15 +1004,15 @@ export default function HostedZoneDetail({ params }: { params: Promise<{ id: str
       {/* Edit Record Modal */}
       {showEditRecord && editingRecord && (
         <div className="fixed inset-0 bg-black/60 flex items-center justify-center z-[100] p-4 animate-in fade-in duration-150">
-          <div className="bg-white rounded-[2px] shadow-2xl w-full max-w-2xl flex flex-col max-h-[90vh] border border-[#D5DBDB]">
-            <div className="px-6 py-3.5 border-b border-[#D5DBDB] flex justify-between items-center bg-[#FAFAFA]">
-              <h2 className="text-[16px] font-bold text-[#16191F]">Edit record</h2>
-              <button onClick={() => setShowEditRecord(false)} className="text-[#545B64] hover:text-[#16191F] text-sm">✕</button>
+          <div className="bg-white rounded-[8px] shadow-2xl w-full max-w-2xl flex flex-col max-h-[90vh] border border-[#D5DBDB]">
+            <div className="px-6 py-3.5 border-b border-[#D5DBDB] flex justify-between items-center bg-[#f9fafb]">
+              <h2 className="text-[16px] font-bold text-[#0f141a]">Edit record</h2>
+              <button onClick={() => setShowEditRecord(false)} className="text-[#414d5c] hover:text-[#0f141a] text-sm">✕</button>
             </div>
             
             <form onSubmit={handleUpdateRecord} className="overflow-y-auto flex-1 p-6 space-y-4">
               <div>
-                <label className="block text-[13px] font-bold text-[#16191F] mb-1">Record name</label>
+                <label className="block text-[13px] font-bold text-[#0f141a] mb-1">Record name</label>
                 <input
                   type="text"
                   value={editingRecord.name}
@@ -1024,7 +1024,7 @@ export default function HostedZoneDetail({ params }: { params: Promise<{ id: str
 
               <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
                 <div>
-                  <label className="block text-[13px] font-bold text-[#16191F] mb-1">Record type</label>
+                  <label className="block text-[13px] font-bold text-[#0f141a] mb-1">Record type</label>
                   <select
                     value={editingRecord.type}
                     onChange={(e) => setEditingRecord({...editingRecord, type: e.target.value})}
@@ -1043,7 +1043,7 @@ export default function HostedZoneDetail({ params }: { params: Promise<{ id: str
                   </select>
                 </div>
                 <div>
-                  <label className="block text-[13px] font-bold text-[#16191F] mb-1">TTL (Seconds)</label>
+                  <label className="block text-[13px] font-bold text-[#0f141a] mb-1">TTL (Seconds)</label>
                   <input
                     type="number"
                     value={editingRecord.ttl}
@@ -1056,7 +1056,7 @@ export default function HostedZoneDetail({ params }: { params: Promise<{ id: str
               </div>
 
               <div>
-                <label className="block text-[13px] font-bold text-[#16191F] mb-1">Routing policy</label>
+                <label className="block text-[13px] font-bold text-[#0f141a] mb-1">Routing policy</label>
                 <select
                   value={editingRecord.routing_policy || "Simple"}
                   onChange={(e) => setEditingRecord({...editingRecord, routing_policy: e.target.value})}
@@ -1072,11 +1072,11 @@ export default function HostedZoneDetail({ params }: { params: Promise<{ id: str
               </div>
 
               <div>
-                <label className="block text-[13px] font-bold text-[#16191F] mb-1">Value</label>
+                <label className="block text-[13px] font-bold text-[#0f141a] mb-1">Value</label>
                 <textarea
                   value={editingRecord.value}
                   onChange={(e) => setEditingRecord({...editingRecord, value: e.target.value})}
-                  className="w-full h-28 px-3 py-2 border border-[#879196] rounded-[2px] focus:outline-none focus:border-[#0073BB] focus:ring-1 focus:ring-[#0073BB] text-[13px] font-mono leading-relaxed"
+                  className="w-full h-28 px-3 py-2 border border-[#879196] rounded-[8px] focus:outline-none focus:border-[#0972d3] focus:ring-1 focus:ring-[#0972d3] text-[13px] font-mono leading-relaxed"
                   required
                 />
               </div>
@@ -1106,20 +1106,20 @@ export default function HostedZoneDetail({ params }: { params: Promise<{ id: str
       {/* Delete Single Record Modal */}
       {deleteTarget && (
         <div className="fixed inset-0 bg-black/60 flex items-center justify-center z-[100] p-4 animate-in fade-in duration-150">
-          <div className="bg-white rounded-[2px] shadow-2xl w-full max-w-md border border-[#D5DBDB]">
-            <div className="px-6 py-3.5 border-b border-[#D5DBDB] bg-[#FAFAFA] flex items-center gap-2 text-[#D13212]">
+          <div className="bg-white rounded-[8px] shadow-2xl w-full max-w-md border border-[#D5DBDB]">
+            <div className="px-6 py-3.5 border-b border-[#D5DBDB] bg-[#f9fafb] flex items-center gap-2 text-[#D13212]">
               <AlertTriangle size={18} />
-              <h2 className="text-[16px] font-bold text-[#16191F]">Delete record?</h2>
+              <h2 className="text-[16px] font-bold text-[#0f141a]">Delete record?</h2>
             </div>
             
             <div className="p-6">
-              <p className="text-[13px] text-[#16191F] mb-3">
+              <p className="text-[13px] text-[#0f141a] mb-3">
                 Are you sure you want to delete this DNS record?
               </p>
-              <div className="bg-[#F2F3F3] border border-[#D5DBDB] rounded-[2px] p-3 text-[12px] mb-4 space-y-1">
-                <div><span className="text-[#545B64] font-bold">Name: </span><span className="font-mono">{deleteTarget.name}</span></div>
-                <div><span className="text-[#545B64] font-bold">Type: </span><span className="font-semibold">{deleteTarget.type}</span></div>
-                <div><span className="text-[#545B64] font-bold">TTL: </span><span>{deleteTarget.ttl}s</span></div>
+              <div className="bg-[#F2F3F3] border border-[#D5DBDB] rounded-[8px] p-3 text-[12px] mb-4 space-y-1">
+                <div><span className="text-[#414d5c] font-bold">Name: </span><span className="font-mono">{deleteTarget.name}</span></div>
+                <div><span className="text-[#414d5c] font-bold">Type: </span><span className="font-semibold">{deleteTarget.type}</span></div>
+                <div><span className="text-[#414d5c] font-bold">TTL: </span><span>{deleteTarget.ttl}s</span></div>
               </div>
               <p className="text-[11px] text-[#879196] mb-4">
                 This action cannot be undone. Traffic will no longer be routed by this record.
@@ -1146,14 +1146,14 @@ export default function HostedZoneDetail({ params }: { params: Promise<{ id: str
       {/* Bulk Delete Records Modal */}
       {showBulkDeleteModal && (
         <div className="fixed inset-0 bg-black/60 flex items-center justify-center z-[100] p-4 animate-in fade-in duration-150">
-          <div className="bg-white rounded-[2px] shadow-2xl w-full max-w-md border border-[#D5DBDB]">
-            <div className="px-6 py-3.5 border-b border-[#D5DBDB] bg-[#FAFAFA] flex items-center gap-2 text-[#D13212]">
+          <div className="bg-white rounded-[8px] shadow-2xl w-full max-w-md border border-[#D5DBDB]">
+            <div className="px-6 py-3.5 border-b border-[#D5DBDB] bg-[#f9fafb] flex items-center gap-2 text-[#D13212]">
               <AlertTriangle size={18} />
-              <h2 className="text-[16px] font-bold text-[#16191F]">Delete {selectedIds.size} record{selectedIds.size > 1 ? "s" : ""}?</h2>
+              <h2 className="text-[16px] font-bold text-[#0f141a]">Delete {selectedIds.size} record{selectedIds.size > 1 ? "s" : ""}?</h2>
             </div>
             
             <div className="p-6">
-              <p className="text-[13px] text-[#16191F] mb-3">
+              <p className="text-[13px] text-[#0f141a] mb-3">
                 Are you sure you want to delete <span className="font-bold">{selectedIds.size}</span> selected record{selectedIds.size > 1 ? "s" : ""}?
               </p>
               <p className="text-[11px] text-[#879196] mb-4">

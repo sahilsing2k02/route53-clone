@@ -132,10 +132,10 @@ export default function HostedZones() {
       <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4 mb-4">
         <div>
           <div className="flex items-center gap-2">
-            <h1 className="text-[22px] font-bold text-[#16191F] tracking-tight">Hosted zones</h1>
-            <span className="text-[13px] font-normal text-[#545B64]">({filteredZones.length})</span>
+            <h1 className="text-[22px] font-bold text-[#0f141a] tracking-tight">Hosted zones</h1>
+            <span className="text-[13px] font-normal text-[#414d5c]">({filteredZones.length})</span>
           </div>
-          <p className="text-[13px] text-[#545B64] mt-0.5 max-w-2xl">
+          <p className="text-[13px] text-[#414d5c] mt-0.5 max-w-2xl">
             A hosted zone is a container for records, which include information about how to route traffic for a domain and its subdomains.
           </p>
         </div>
@@ -182,10 +182,10 @@ export default function HostedZones() {
       {/* Main Table Container */}
       <div className="aws-panel overflow-hidden">
         {/* Filter / Search Bar */}
-        <div className="p-3 border-b border-[#D5DBDB] bg-[#FAFAFA] flex items-center justify-between gap-3 flex-wrap">
+        <div className="p-3 border-b border-[#D5DBDB] bg-[#f9fafb] flex items-center justify-between gap-3 flex-wrap">
           <div className="flex items-center gap-3 flex-1 min-w-[280px]">
             <div className="relative flex-1 max-w-md">
-              <Search className="absolute left-2.5 top-1/2 transform -translate-y-1/2 text-[#545B64]" size={14} />
+              <Search className="absolute left-2.5 top-1/2 transform -translate-y-1/2 text-[#414d5c]" size={14} />
               <input
                 type="text"
                 placeholder="Search hosted zones by name, ID, or description"
@@ -196,7 +196,7 @@ export default function HostedZones() {
               {search && (
                 <button 
                   onClick={() => setSearch("")}
-                  className="absolute right-2 top-1/2 transform -translate-y-1/2 text-[#879196] hover:text-[#16191F] text-xs font-bold"
+                  className="absolute right-2 top-1/2 transform -translate-y-1/2 text-[#879196] hover:text-[#0f141a] text-xs font-bold"
                 >
                   ✕
                 </button>
@@ -204,7 +204,7 @@ export default function HostedZones() {
             </div>
 
             <div className="flex items-center gap-1.5">
-              <label className="text-[12px] font-bold text-[#545B64] uppercase">Type:</label>
+              <label className="text-[12px] font-bold text-[#414d5c] uppercase">Type:</label>
               <select
                 value={typeFilter}
                 onChange={(e) => setTypeFilter(e.target.value as any)}
@@ -217,7 +217,7 @@ export default function HostedZones() {
             </div>
           </div>
 
-          <div className="text-[12px] text-[#545B64]">
+          <div className="text-[12px] text-[#414d5c]">
             {selectedIds.size > 0 ? `${selectedIds.size} of ${filteredZones.length} selected` : `${filteredZones.length} total`}
           </div>
         </div>
@@ -233,7 +233,7 @@ export default function HostedZones() {
                     checked={paginatedZones.length > 0 && selectedIds.size === paginatedZones.length}
                     onChange={toggleSelectAll}
                     aria-label="Select all hosted zones"
-                    className="w-3.5 h-3.5 rounded-[2px] border-[#879196] text-[#0073BB] focus:ring-[#0073BB] cursor-pointer"
+                    className="w-3.5 h-3.5 rounded-[8px] border-[#879196] text-[#0972d3] focus:ring-[#0972d3] cursor-pointer"
                   />
                 </th>
                 <th className="aws-table-header">Domain name</th>
@@ -246,21 +246,21 @@ export default function HostedZones() {
             <tbody>
               {loading ? (
                 <tr>
-                  <td colSpan={6} className="px-4 py-12 text-center text-[#545B64]">
+                  <td colSpan={6} className="px-4 py-12 text-center text-[#414d5c]">
                     <div className="flex items-center justify-center gap-2">
-                      <RefreshCw size={16} className="animate-spin text-[#EC7211]" />
+                      <RefreshCw size={16} className="animate-spin text-[#0972d3]" />
                       <span>Loading hosted zones...</span>
                     </div>
                   </td>
                 </tr>
               ) : paginatedZones.length === 0 ? (
                 <tr>
-                  <td colSpan={6} className="px-4 py-12 text-center text-[#545B64]">
+                  <td colSpan={6} className="px-4 py-12 text-center text-[#414d5c]">
                     <div className="max-w-md mx-auto">
-                      <div className="text-[15px] font-bold text-[#16191F] mb-1">
+                      <div className="text-[15px] font-bold text-[#0f141a] mb-1">
                         {zones.length === 0 ? "No hosted zones" : "No matches found"}
                       </div>
-                      <p className="text-[13px] text-[#545B64] mb-4">
+                      <p className="text-[13px] text-[#414d5c] mb-4">
                         {zones.length === 0
                           ? "You don't have any hosted zones in Route 53. Create a hosted zone to start routing traffic."
                           : "No hosted zones match the search and filter criteria. Try clearing filters."}
@@ -296,19 +296,19 @@ export default function HostedZones() {
                           checked={isSelected}
                           onChange={() => toggleSelect(zone.id)}
                           aria-label={`Select ${zone.name}`}
-                          className="w-3.5 h-3.5 rounded-[2px] border-[#879196] text-[#0073BB] focus:ring-[#0073BB] cursor-pointer"
+                          className="w-3.5 h-3.5 rounded-[8px] border-[#879196] text-[#0972d3] focus:ring-[#0972d3] cursor-pointer"
                         />
                       </td>
                       <td className="aws-table-cell font-bold" onClick={(e) => e.stopPropagation()}>
                         <Link 
                           href={`/hosted-zones/${zone.id}`} 
-                          className="text-[#0073BB] hover:underline hover:text-[#00297A] inline-flex items-center gap-1"
+                          className="text-[#0972d3] hover:underline hover:text-[#033160] inline-flex items-center gap-1"
                         >
                           <span>{zone.name}</span>
                           <ExternalLink size={11} className="text-[#879196]" />
                         </Link>
                       </td>
-                      <td className="aws-table-cell font-mono text-[12px] text-[#545B64]">{zone.id}</td>
+                      <td className="aws-table-cell font-mono text-[12px] text-[#414d5c]">{zone.id}</td>
                       <td className="aws-table-cell">
                         {zone.private_zone ? (
                           <span className="aws-badge-private">Private</span>
@@ -317,7 +317,7 @@ export default function HostedZones() {
                         )}
                       </td>
                       <td className="aws-table-cell font-medium">{zone.record_set_count}</td>
-                      <td className="aws-table-cell text-[#545B64]">{zone.comment || "-"}</td>
+                      <td className="aws-table-cell text-[#414d5c]">{zone.comment || "-"}</td>
                     </tr>
                   );
                 })
@@ -327,7 +327,7 @@ export default function HostedZones() {
         </div>
 
         {/* Cloudscape Pagination Footer */}
-        <div className="p-3 bg-[#FAFAFA] flex justify-between items-center text-[12px] text-[#545B64] border-t border-[#D5DBDB]">
+        <div className="p-3 bg-[#f9fafb] flex justify-between items-center text-[12px] text-[#414d5c] border-t border-[#D5DBDB]">
           <div className="flex items-center gap-3">
             <span>
               {filteredZones.length === 0 ? "0 hosted zones" : `${startIndex + 1}-${Math.min(startIndex + pageSize, filteredZones.length)} of ${filteredZones.length} hosted zones`}
@@ -376,22 +376,22 @@ export default function HostedZones() {
       {/* Delete Confirmation Modal (AWS Cloudscape style) */}
       {showDeleteModal && (
         <div className="fixed inset-0 bg-black/60 flex items-center justify-center z-[100] p-4 animate-in fade-in duration-150">
-          <div className="bg-white rounded-[2px] shadow-2xl w-full max-w-lg border border-[#D5DBDB]">
-            <div className="px-6 py-4 border-b border-[#D5DBDB] bg-[#FAFAFA] flex items-center justify-between">
+          <div className="bg-white rounded-[8px] shadow-2xl w-full max-w-lg border border-[#D5DBDB]">
+            <div className="px-6 py-4 border-b border-[#D5DBDB] bg-[#f9fafb] flex items-center justify-between">
               <div className="flex items-center gap-2 text-[#D13212]">
                 <AlertTriangle size={18} />
-                <h2 className="text-[16px] font-bold text-[#16191F]">Delete hosted zone{selectedIds.size > 1 ? "s" : ""}?</h2>
+                <h2 className="text-[16px] font-bold text-[#0f141a]">Delete hosted zone{selectedIds.size > 1 ? "s" : ""}?</h2>
               </div>
               <button 
                 onClick={() => setShowDeleteModal(false)} 
-                className="text-[#545B64] hover:text-[#16191F] text-sm"
+                className="text-[#414d5c] hover:text-[#0f141a] text-sm"
               >
                 ✕
               </button>
             </div>
             
             <div className="p-6">
-              <p className="text-[13px] text-[#16191F] mb-3">
+              <p className="text-[13px] text-[#0f141a] mb-3">
                 Are you sure you want to delete <span className="font-bold">{selectedIds.size}</span> hosted zone{selectedIds.size > 1 ? "s" : ""}?
               </p>
               

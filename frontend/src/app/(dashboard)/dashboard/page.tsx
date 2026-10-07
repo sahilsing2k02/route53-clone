@@ -44,8 +44,8 @@ export default function Home() {
       {/* Page Header */}
       <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4 mb-6">
         <div>
-          <h1 className="text-[22px] font-bold text-[#16191F] tracking-tight">Route 53 Dashboard</h1>
-          <p className="text-[13px] text-[#545B64] mt-0.5">
+          <h1 className="text-[22px] font-bold text-[#0f141a] tracking-tight">Route 53 Dashboard</h1>
+          <p className="text-[13px] text-[#414d5c] mt-0.5">
             Amazon Route 53 is a highly available and scalable cloud Domain Name System (DNS) web service.
           </p>
         </div>
@@ -60,10 +60,10 @@ export default function Home() {
       {/* Resource Summary Container (AWS Cloudscape Card) */}
       <div className="aws-panel mb-6 overflow-hidden">
         <div className="aws-panel-header">
-          <h2 className="text-[14px] font-bold text-[#16191F]">DNS Management & Global Resources</h2>
+          <h2 className="text-[14px] font-bold text-[#0f141a]">DNS Management & Global Resources</h2>
           <button 
             onClick={fetchSummary} 
-            className="text-[12px] text-[#545B64] hover:text-[#16191F] flex items-center gap-1"
+            className="text-[12px] text-[#414d5c] hover:text-[#0f141a] flex items-center gap-1"
             title="Refresh summary"
           >
             <RefreshCw size={12} className={loading ? "animate-spin" : ""} />
@@ -74,16 +74,16 @@ export default function Home() {
         <div className="p-6 grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6 divide-y sm:divide-y-0 sm:divide-x divide-[#EAEDED]">
           {/* Hosted Zones Widget */}
           <div className="pt-4 sm:pt-0 sm:pr-6">
-            <div className="flex items-center gap-2 text-[#545B64] text-[12px] font-bold uppercase mb-1">
-              <Layers size={14} className="text-[#EC7211]" />
+            <div className="flex items-center gap-2 text-[#414d5c] text-[12px] font-bold uppercase mb-1">
+              <Layers size={14} className="text-[#0972d3]" />
               <span>Hosted zones</span>
             </div>
-            <div className="text-[28px] font-bold text-[#16191F] leading-tight my-1">
+            <div className="text-[28px] font-bold text-[#0f141a] leading-tight my-1">
               {loading ? "-" : zoneCount}
             </div>
             <Link 
               href="/hosted-zones" 
-              className="text-[#0073BB] hover:underline text-[12px] font-semibold inline-flex items-center gap-1 mt-1"
+              className="text-[#0972d3] hover:underline text-[12px] font-semibold inline-flex items-center gap-1 mt-1"
             >
               <span>View hosted zones</span>
               <ArrowRight size={11} />
@@ -92,16 +92,16 @@ export default function Home() {
 
           {/* Traffic Policies */}
           <div className="pt-4 sm:pt-0 sm:px-6">
-            <div className="flex items-center gap-2 text-[#545B64] text-[12px] font-bold uppercase mb-1">
+            <div className="flex items-center gap-2 text-[#414d5c] text-[12px] font-bold uppercase mb-1">
               <GitBranch size={14} className="text-[#879196]" />
               <span>Traffic policies</span>
             </div>
-            <div className="text-[28px] font-bold text-[#16191F] leading-tight my-1">
+            <div className="text-[28px] font-bold text-[#0f141a] leading-tight my-1">
               0
             </div>
             <Link 
               href="/traffic-policies" 
-              className="text-[#0073BB] hover:underline text-[12px] font-semibold inline-flex items-center gap-1 mt-1"
+              className="text-[#0972d3] hover:underline text-[12px] font-semibold inline-flex items-center gap-1 mt-1"
             >
               <span>View policies</span>
               <ArrowRight size={11} />
@@ -110,16 +110,16 @@ export default function Home() {
 
           {/* Health Checks */}
           <div className="pt-4 sm:pt-0 sm:px-6">
-            <div className="flex items-center gap-2 text-[#545B64] text-[12px] font-bold uppercase mb-1">
+            <div className="flex items-center gap-2 text-[#414d5c] text-[12px] font-bold uppercase mb-1">
               <Activity size={14} className="text-[#879196]" />
               <span>Health checks</span>
             </div>
-            <div className="text-[28px] font-bold text-[#16191F] leading-tight my-1">
+            <div className="text-[28px] font-bold text-[#0f141a] leading-tight my-1">
               0
             </div>
             <Link 
               href="/health-checks" 
-              className="text-[#0073BB] hover:underline text-[12px] font-semibold inline-flex items-center gap-1 mt-1"
+              className="text-[#0972d3] hover:underline text-[12px] font-semibold inline-flex items-center gap-1 mt-1"
             >
               <span>View health checks</span>
               <ArrowRight size={11} />
@@ -128,16 +128,16 @@ export default function Home() {
 
           {/* Resolver Profiles */}
           <div className="pt-4 sm:pt-0 sm:pl-6">
-            <div className="flex items-center gap-2 text-[#545B64] text-[12px] font-bold uppercase mb-1">
+            <div className="flex items-center gap-2 text-[#414d5c] text-[12px] font-bold uppercase mb-1">
               <ShieldCheck size={14} className="text-[#879196]" />
               <span>Resolver Profiles</span>
             </div>
-            <div className="text-[28px] font-bold text-[#16191F] leading-tight my-1">
+            <div className="text-[28px] font-bold text-[#0f141a] leading-tight my-1">
               0
             </div>
             <Link 
               href="/resolver" 
-              className="text-[#0073BB] hover:underline text-[12px] font-semibold inline-flex items-center gap-1 mt-1"
+              className="text-[#0972d3] hover:underline text-[12px] font-semibold inline-flex items-center gap-1 mt-1"
             >
               <span>View resolver</span>
               <ArrowRight size={11} />
@@ -151,10 +151,10 @@ export default function Home() {
         <div className="aws-panel p-6 flex flex-col justify-between">
           <div>
             <div className="flex items-center gap-2 mb-2">
-              <Globe2 size={16} className="text-[#EC7211]" />
-              <h3 className="text-[15px] font-bold text-[#16191F]">DNS Routing Management</h3>
+              <Globe2 size={16} className="text-[#0972d3]" />
+              <h3 className="text-[15px] font-bold text-[#0f141a]">DNS Routing Management</h3>
             </div>
-            <p className="text-[13px] text-[#545B64] leading-relaxed mb-4">
+            <p className="text-[13px] text-[#414d5c] leading-relaxed mb-4">
               Create and manage public or private hosted zones to route user requests for your domains to web servers, load balancers, and CDN distributions.
             </p>
           </div>
@@ -166,10 +166,10 @@ export default function Home() {
         <div className="aws-panel p-6 flex flex-col justify-between">
           <div>
             <div className="flex items-center gap-2 mb-2">
-              <GitBranch size={16} className="text-[#545B64]" />
-              <h3 className="text-[15px] font-bold text-[#16191F]">Traffic Flow Policies</h3>
+              <GitBranch size={16} className="text-[#414d5c]" />
+              <h3 className="text-[15px] font-bold text-[#0f141a]">Traffic Flow Policies</h3>
             </div>
-            <p className="text-[13px] text-[#545B64] leading-relaxed mb-4">
+            <p className="text-[13px] text-[#414d5c] leading-relaxed mb-4">
               Use visual traffic policies to route traffic based on geolocation, latency, IP networks, and multi-region failover.
             </p>
           </div>
@@ -181,10 +181,10 @@ export default function Home() {
         <div className="aws-panel p-6 flex flex-col justify-between">
           <div>
             <div className="flex items-center gap-2 mb-2">
-              <Activity size={16} className="text-[#545B64]" />
-              <h3 className="text-[15px] font-bold text-[#16191F]">Availability Monitoring</h3>
+              <Activity size={16} className="text-[#414d5c]" />
+              <h3 className="text-[15px] font-bold text-[#0f141a]">Availability Monitoring</h3>
             </div>
-            <p className="text-[13px] text-[#545B64] leading-relaxed mb-4">
+            <p className="text-[13px] text-[#414d5c] leading-relaxed mb-4">
               Configure health checks to monitor web servers, API endpoints, and cloud infrastructure with automatic DNS failover triggers.
             </p>
           </div>

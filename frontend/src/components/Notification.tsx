@@ -50,9 +50,9 @@ const styleMap = {
   },
   info: {
     bg: "bg-[#F1FAFF]",
-    border: "border-[#0073BB]",
-    icon: "text-[#0073BB]",
-    text: "text-[#0073BB]",
+    border: "border-[#0972d3]",
+    icon: "text-[#0972d3]",
+    text: "text-[#0972d3]",
   },
 };
 
@@ -94,7 +94,7 @@ export function NotificationProvider({ children }: { children: React.ReactNode }
               <p className={`${styles.text} text-sm flex-1`}>{notification.message}</p>
               <button
                 onClick={() => removeNotification(notification.id)}
-                className="text-[#545B64] hover:text-[#16191F] flex-shrink-0"
+                className="text-[#414d5c] hover:text-[#0f141a] flex-shrink-0"
               >
                 <X size={16} />
               </button>
