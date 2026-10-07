@@ -1,7 +1,7 @@
 "use client";
 
 import { useAuth } from "@/context/AuthContext";
-import { LogOut, User, Globe, Bell, HelpCircle, Terminal, ChevronDown, Check } from "lucide-react";
+import { LogOut, User, Globe, ChevronDown, Check, Terminal, Bell, HelpCircle, X } from "lucide-react";
 import { useState, useEffect, useRef } from "react";
 import Link from "next/link";
 
@@ -10,9 +10,11 @@ export default function Header() {
   const [mounted, setMounted] = useState(false);
   const [userMenuOpen, setUserMenuOpen] = useState(false);
   const [regionMenuOpen, setRegionMenuOpen] = useState(false);
+  const [activeUtility, setActiveUtility] = useState<'terminal' | 'bell' | 'help' | null>(null);
   const searchInputRef = useRef<HTMLInputElement>(null);
   const userMenuRef = useRef<HTMLDivElement>(null);
   const regionMenuRef = useRef<HTMLDivElement>(null);
+  const utilityMenuRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
     setMounted(true);
@@ -30,6 +32,9 @@ export default function Header() {
       }
       if (regionMenuRef.current && !regionMenuRef.current.contains(e.target as Node)) {
         setRegionMenuOpen(false);
+      }
+      if (utilityMenuRef.current && !utilityMenuRef.current.contains(e.target as Node)) {
+        setActiveUtility(null);
       }
     };
 
@@ -87,30 +92,66 @@ export default function Header() {
       
       {/* Right Tools & Context */}
       <div className="flex items-center gap-1 sm:gap-2">
-        {/* CloudShell */}
-        <button 
-          className="p-1.5 text-[#D5DBDB] hover:text-white hover:bg-[#232F3E] rounded-[2px] transition-colors"
-          title="CloudShell"
-        >
-          <Terminal size={15} />
-        </button>
+        {/* Utilities */}
+        <div className="flex items-center gap-1 sm:gap-2 relative" ref={utilityMenuRef}>
+          {/* CloudShell */}
+          <button 
+            onClick={() => setActiveUtility(activeUtility === 'terminal' ? null : 'terminal')}
+            className={`p-1.5 rounded-[2px] transition-colors ${activeUtility === 'terminal' ? 'bg-[#232F3E] text-white' : 'text-[#D5DBDB] hover:text-white hover:bg-[#232F3E]'}`}
+            title="CloudShell"
+          >
+            <Terminal size={15} />
+          </button>
 
-        {/* Notifications */}
-        <button 
-          className="p-1.5 text-[#D5DBDB] hover:text-white hover:bg-[#232F3E] rounded-[2px] transition-colors relative"
-          title="Notifications"
-        >
-          <Bell size={15} />
-          <span className="absolute top-1 right-1 w-1.5 h-1.5 bg-[#EC7211] rounded-full"></span>
-        </button>
+          {/* Notifications */}
+          <button 
+            onClick={() => setActiveUtility(activeUtility === 'bell' ? null : 'bell')}
+            className={`p-1.5 rounded-[2px] transition-colors relative ${activeUtility === 'bell' ? 'bg-[#232F3E] text-white' : 'text-[#D5DBDB] hover:text-white hover:bg-[#232F3E]'}`}
+            title="Notifications"
+          >
+            <Bell size={15} />
+            <span className="absolute top-1 right-1 w-1.5 h-1.5 bg-[#EC7211] rounded-full"></span>
+          </button>
 
-        {/* Help */}
-        <button 
-          className="p-1.5 text-[#D5DBDB] hover:text-white hover:bg-[#232F3E] rounded-[2px] transition-colors"
-          title="Help and Support"
-        >
-          <HelpCircle size={15} />
-        </button>
+          {/* Help */}
+          <button 
+            onClick={() => setActiveUtility(activeUtility === 'help' ? null : 'help')}
+            className={`p-1.5 rounded-[2px] transition-colors ${activeUtility === 'help' ? 'bg-[#232F3E] text-white' : 'text-[#D5DBDB] hover:text-white hover:bg-[#232F3E]'}`}
+            title="Help and Support"
+          >
+            <HelpCircle size={15} />
+          </button>
+
+          {/* Popover */}
+          {activeUtility && (
+            <div className="absolute right-0 top-full mt-2 w-72 bg-white shadow-[0_4px_12px_rgba(0,0,0,0.15)] border border-gray-300 rounded-[2px] z-50 overflow-hidden text-gray-800">
+              <div className="flex items-center justify-between px-4 py-3 border-b border-gray-200 bg-gray-50">
+                <h3 className="font-bold text-[14px]">
+                  {activeUtility === 'terminal' && 'AWS CloudShell'}
+                  {activeUtility === 'bell' && 'Notifications'}
+                  {activeUtility === 'help' && 'Help & Support'}
+                </h3>
+                <button 
+                  onClick={() => setActiveUtility(null)}
+                  className="text-gray-500 hover:text-gray-800 cursor-pointer"
+                >
+                  <X size={16} />
+                </button>
+              </div>
+              <div className="p-4 flex flex-col gap-3">
+                <p className="text-[13px] leading-relaxed text-gray-600">
+                  {activeUtility === 'terminal' && 'A browser-based shell that makes it easy to securely manage, explore, and interact with your AWS resources.'}
+                  {activeUtility === 'bell' && 'You have no new notifications. Alerts and updates will appear here.'}
+                  {activeUtility === 'help' && 'Find answers, documentation, and support for your AWS services.'}
+                </p>
+                <div className="bg-[#E7F1F8] border border-[#0073BB] text-[#0073BB] px-3 py-2 rounded-[2px] text-[12px] font-medium flex items-start gap-2">
+                  <div className="mt-0.5 font-bold">i</div>
+                  <div>This feature is coming soon in a future update when I get selected for the full-time job at Scalers AI 😁😁</div>
+                </div>
+              </div>
+            </div>
+          )}
+        </div>
 
         <div className="h-4 w-[1px] bg-[#545B64] mx-1"></div>
 
