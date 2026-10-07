@@ -39,4 +39,26 @@
   .aws-table-cell {
     @apply px-4 py-3 border-r border-[#D5DBDB] border-b text-sm;
   }
+  .aws-btn-icon {
+    @apply bg-transparent border border-transparent hover:border-[#879196] hover:bg-[#FAFAFA] text-[#545B64] hover:text-[#16191F] font-bold p-[6px] text-sm rounded-[2px] transition-all;
+  }
+  .aws-select {
+    @apply px-3 py-1.5 border border-[#879196] rounded-[2px] focus:outline-none focus:border-[#0073BB] focus:ring-1 focus:ring-[#0073BB] text-sm bg-white appearance-none bg-no-repeat bg-[length:16px_16px] bg-[right_8px_center] pr-8;
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 16'%3E%3Cpath fill='%23545B64' d='M4.5 6L8 9.5 11.5 6z'/%3E%3C/svg%3E");
+  }
+}
+
+@keyframes slide-in {
+  from {
+    opacity: 0;
+    transform: translateX(100%);
+  }
+  to {
+    opacity: 1;
+    transform: translateX(0);
+  }
+}
+
+.animate-slide-in {
+  animation: slide-in 0.3s ease-out;
 }
