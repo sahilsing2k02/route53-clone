@@ -332,6 +332,7 @@ export default function HostedZoneDetail({ params }: { params: Promise<{ id: str
                     <option value="CNAME">CNAME - Routes traffic to another domain name and to some AWS resources</option>
                     <option value="MX">MX - Specifies mail servers</option>
                     <option value="TXT">TXT - Routes traffic to text strings</option>
+                    <option value="NS">NS - Name servers for a hosted zone</option>
                     <option value="PTR">PTR - Routes traffic to a domain name</option>
                     <option value="SRV">SRV - Routes traffic to an IP address</option>
                     <option value="CAA">CAA - Specifies certificate authorities</option>
@@ -493,6 +494,7 @@ export default function HostedZoneDetail({ params }: { params: Promise<{ id: str
                     <option value="CNAME">CNAME - Routes traffic to another domain name and to some AWS resources</option>
                     <option value="MX">MX - Specifies mail servers</option>
                     <option value="TXT">TXT - Routes traffic to text strings</option>
+                    <option value="NS">NS - Name servers for a hosted zone</option>
                     <option value="PTR">PTR - Routes traffic to a domain name</option>
                     <option value="SRV">SRV - Routes traffic to an IP address</option>
                     <option value="CAA">CAA - Specifies certificate authorities</option>
