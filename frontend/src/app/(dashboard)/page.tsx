@@ -45,6 +45,20 @@ export default function Home() {
             Route traffic based on multiple criteria. (Coming Soon)
           </p>
         </div>
+
+        <div className="aws-panel p-6 opacity-60">
+          <h2 className="text-lg font-bold text-[#16191F] mb-2">Resolver</h2>
+          <p className="text-sm text-[#545B64] mb-4">
+            Respond to DNS queries for your VPC. (Coming Soon)
+          </p>
+        </div>
+
+        <div className="aws-panel p-6 opacity-60">
+          <h2 className="text-lg font-bold text-[#16191F] mb-2">Profiles</h2>
+          <p className="text-sm text-[#545B64] mb-4">
+            Share DNS settings across VPCs and AWS accounts. (Coming Soon)
+          </p>
+        </div>
       </div>
     </div>
   );

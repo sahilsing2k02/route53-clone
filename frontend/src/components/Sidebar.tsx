@@ -11,6 +11,7 @@ const navigation = [
   { name: "Health checks", href: "/health-checks" },
   { name: "Traffic policies", href: "/traffic-policies" },
   { name: "Resolver", href: "/resolver" },
+  { name: "Profiles", href: "/profiles" },
 ];
 
 export default function Sidebar() {
