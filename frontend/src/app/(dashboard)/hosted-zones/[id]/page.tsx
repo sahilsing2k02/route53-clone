@@ -23,6 +23,9 @@ export default function HostedZoneDetail({ params }: { params: Promise<{ id: str
   const [loading, setLoading] = useState(true);
   const [typeFilter, setTypeFilter] = useState("All");
 
+  // Selection state
+  const [selectedIds, setSelectedIds] = useState<Set<number>>(new Set());
+
   // Pagination
   const [currentPage, setCurrentPage] = useState(1);
   const [pageSize, setPageSize] = useState(10);
@@ -99,6 +102,59 @@ export default function HostedZoneDetail({ params }: { params: Promise<{ id: str
     } finally {
       setDeleteTarget(null);
     }
+  };
+
+  const handleBulkDelete = async () => {
+    if (selectedIds.size === 0) return;
+    if (!confirm(`Are you sure you want to delete ${selectedIds.size} record(s)?`)) return;
+
+    let deleted = 0;
+    for (const id of selectedIds) {
+      try {
+        const res = await fetch(`${process.env.NEXT_PUBLIC_API_URL || "http://127.0.0.1:8000"}/api/records/${id}`, {
+          method: "DELETE",
+        });
+        if (res.ok) deleted++;
+      } catch (err) {
+        console.error(err);
+      }
+    }
+    addNotification("success", `Successfully deleted ${deleted} record(s).`);
+    setSelectedIds(new Set());
+    fetchZoneDetails();
+  };
+
+  const handleExportZone = () => {
+    if (!zone || !records) return;
+    
+    // Create a simplified JSON export of the zone and its records
+    const exportData = {
+      zone: {
+        id: zone.id,
+        name: zone.name,
+        private_zone: zone.private_zone,
+        comment: zone.comment,
+      },
+      records: records.map(r => ({
+        name: r.name,
+        type: r.type,
+        ttl: r.ttl,
+        routing_policy: r.routing_policy,
+        value: r.value
+      }))
+    };
+    
+    const blob = new Blob([JSON.stringify(exportData, null, 2)], { type: "application/json" });
+    const url = URL.createObjectURL(blob);
+    const a = document.createElement("a");
+    a.href = url;
+    a.download = `${zone.name}.zone.json`;
+    document.body.appendChild(a);
+    a.click();
+    document.body.removeChild(a);
+    URL.revokeObjectURL(url);
+    
+    addNotification("success", `Exported zone ${zone.name} successfully.`);
   };
 
   const handleEditZone = async (e: React.FormEvent) => {
@@ -199,7 +255,28 @@ export default function HostedZoneDetail({ params }: { params: Promise<{ id: str
 
   useEffect(() => {
     setCurrentPage(1);
+    setSelectedIds(new Set());
   }, [search, typeFilter, pageSize]);
+
+  // Selection handlers
+  const deletableRecords = paginatedRecords.filter(
+    r => !(["NS", "SOA"].includes(r.type) && r.name === zone.name)
+  );
+
+  const toggleSelectAll = () => {
+    if (selectedIds.size === deletableRecords.length && deletableRecords.length > 0) {
+      setSelectedIds(new Set());
+    } else {
+      setSelectedIds(new Set(deletableRecords.map((r) => r.id)));
+    }
+  };
+
+  const toggleSelect = (id: number) => {
+    const next = new Set(selectedIds);
+    if (next.has(id)) next.delete(id);
+    else next.add(id);
+    setSelectedIds(next);
+  };
 
   if (!user || (!zone && loading)) {
     return <div className="p-8 text-[#545B64]">Loading...</div>;
@@ -265,6 +342,12 @@ export default function HostedZoneDetail({ params }: { params: Promise<{ id: str
       <div className="flex justify-between items-center mb-4">
         <h2 className="text-lg font-bold text-[#16191F]">Records</h2>
         <div className="flex gap-2">
+          <button
+            onClick={handleExportZone}
+            className="aws-btn-secondary flex items-center gap-2"
+          >
+            Export zone
+          </button>
           <button 
             onClick={fetchZoneDetails}
             className="aws-btn-icon"
@@ -272,6 +355,15 @@ export default function HostedZoneDetail({ params }: { params: Promise<{ id: str
           >
             <RefreshCw size={14} className={loading ? "animate-spin" : ""} />
           </button>
+          {selectedIds.size > 0 && (
+            <button
+              onClick={handleBulkDelete}
+              className="aws-btn-secondary flex items-center gap-2 text-[#D13212]"
+            >
+              <Trash2 size={14} />
+              Delete ({selectedIds.size})
+            </button>
+          )}
           <button
             onClick={() => setShowCreate(true)}
             className="aws-btn-primary flex items-center gap-2"
@@ -313,6 +405,15 @@ export default function HostedZoneDetail({ params }: { params: Promise<{ id: str
           <table className="w-full text-sm text-left border-collapse">
             <thead>
               <tr>
+                <th className="aws-table-header px-4 py-3 border-r w-10">
+                  <input
+                    type="checkbox"
+                    checked={deletableRecords.length > 0 && selectedIds.size === deletableRecords.length}
+                    onChange={toggleSelectAll}
+                    disabled={deletableRecords.length === 0}
+                    className="w-4 h-4 rounded border-[#879196] text-[#0073BB] focus:ring-[#0073BB] disabled:opacity-50"
+                  />
+                </th>
                 <th className="aws-table-header px-4 py-3 border-r min-w-[200px]">Record name</th>
                 <th className="aws-table-header px-4 py-3 border-r">Type</th>
                 <th className="aws-table-header px-4 py-3 border-r">Routing policy</th>
@@ -324,19 +425,30 @@ export default function HostedZoneDetail({ params }: { params: Promise<{ id: str
             <tbody>
               {loading ? (
                 <tr>
-                  <td colSpan={6} className="px-4 py-8 text-center text-[#545B64]">Loading...</td>
+                  <td colSpan={7} className="px-4 py-8 text-center text-[#545B64]">Loading...</td>
                 </tr>
               ) : paginatedRecords.length === 0 ? (
                 <tr>
-                  <td colSpan={6} className="px-4 py-8 text-center text-[#545B64]">
+                  <td colSpan={7} className="px-4 py-8 text-center text-[#545B64]">
                     {records.length === 0
                       ? "No records found. Create a record to get started."
                       : "No records match the current filter criteria."}
                   </td>
                 </tr>
               ) : (
-                paginatedRecords.map((record) => (
-                  <tr key={record.id} className="hover:bg-[#F2F3F3]">
+                paginatedRecords.map((record) => {
+                  const isSystem = ["NS", "SOA"].includes(record.type) && record.name === zone.name;
+                  return (
+                  <tr key={record.id} className={`hover:bg-[#F2F3F3] ${selectedIds.has(record.id) ? "bg-[#F1FAFF]" : ""}`}>
+                    <td className="aws-table-cell w-10">
+                      <input
+                        type="checkbox"
+                        checked={selectedIds.has(record.id)}
+                        onChange={() => toggleSelect(record.id)}
+                        disabled={isSystem}
+                        className="w-4 h-4 rounded border-[#879196] text-[#0073BB] focus:ring-[#0073BB] disabled:opacity-50"
+                      />
+                    </td>
                     <td className="aws-table-cell font-bold text-[#16191F]">{record.name}</td>
                     <td className="aws-table-cell">
                       <span className="inline-flex items-center px-1.5 py-0.5 rounded text-xs font-bold bg-[#F2F3F3] text-[#545B64] border border-[#D5DBDB]">
@@ -347,7 +459,7 @@ export default function HostedZoneDetail({ params }: { params: Promise<{ id: str
                     <td className="aws-table-cell">{record.ttl}</td>
                     <td className="aws-table-cell whitespace-pre-wrap font-mono text-xs text-[#0073BB]">{record.value}</td>
                     <td className="aws-table-cell border-r-0">
-                      {["NS", "SOA"].includes(record.type) && record.name === zone.name ? (
+                      {isSystem ? (
                         <div className="flex gap-3 items-center">
                           <button
                             onClick={() => openEditRecord(record)}
@@ -375,7 +487,8 @@ export default function HostedZoneDetail({ params }: { params: Promise<{ id: str
                       )}
                     </td>
                   </tr>
-                ))
+                );
+                })
               )}
             </tbody>
           </table>

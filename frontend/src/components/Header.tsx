@@ -2,15 +2,26 @@
 
 import { useAuth } from "@/context/AuthContext";
 import { LogOut, User } from "lucide-react";
-import { useState, useEffect } from "react";
+import { useState, useEffect, useRef } from "react";
 import Link from "next/link";
 
 export default function Header() {
   const { user, logout } = useAuth();
   const [mounted, setMounted] = useState(false);
+  const searchInputRef = useRef<HTMLInputElement>(null);
 
   useEffect(() => {
     setMounted(true);
+    
+    const handleKeyDown = (e: KeyboardEvent) => {
+      if (e.altKey && e.key.toLowerCase() === 's') {
+        e.preventDefault();
+        searchInputRef.current?.focus();
+      }
+    };
+    
+    window.addEventListener('keydown', handleKeyDown);
+    return () => window.removeEventListener('keydown', handleKeyDown);
   }, []);
 
   if (!mounted || !user) return null;
@@ -27,11 +38,12 @@ export default function Header() {
         <div className="flex-1 max-w-xl px-8 hidden md:block">
           <div className="relative">
             <input 
+              ref={searchInputRef}
               type="text" 
               placeholder="Search for services, features, blogs, docs, and more"
               className="w-full bg-[#16191F] border border-[#545B64] rounded-[2px] py-1 px-3 text-white placeholder-gray-400 focus:outline-none focus:bg-white focus:text-black focus:border-[#0073BB] transition-colors"
             />
-            <div className="absolute right-2 top-1.5 text-gray-400 text-xs border border-gray-500 rounded px-1 hidden lg:block">Alt + S</div>
+            <div className="absolute right-2 top-1.5 text-gray-400 text-xs border border-gray-500 rounded px-1 hidden lg:block cursor-pointer" onClick={() => searchInputRef.current?.focus()}>Alt + S</div>
           </div>
         </div>
       )}
