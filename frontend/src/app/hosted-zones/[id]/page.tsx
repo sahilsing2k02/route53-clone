@@ -35,7 +35,7 @@ export default function HostedZoneDetail({ params }: { params: Promise<{ id: str
       if (res.ok) {
         const data = await res.json();
         setZone(data);
-        setRecords(data.records);
+        setRecords(Array.isArray(data.records) ? data.records : []);
       } else {
         router.push("/hosted-zones");
       }
@@ -151,6 +151,7 @@ export default function HostedZoneDetail({ params }: { params: Promise<{ id: str
             onClick={() => setShowCreate(true)}
             className="aws-btn-primary flex items-center gap-2"
           >
+            <Plus size={16} />
             Create record
           </button>
         </div>
@@ -165,7 +166,7 @@ export default function HostedZoneDetail({ params }: { params: Promise<{ id: str
               placeholder="Find records by name or value"
               value={search}
               onChange={(e) => setSearch(e.target.value)}
-              className="aws-input pl-9"
+              className="aws-input !pl-9"
             />
           </div>
         </div>

@@ -17,7 +17,7 @@ export default function HostedZones() {
       const res = await fetch(`${process.env.NEXT_PUBLIC_API_URL || "http://127.0.0.1:8000"}/api/hosted-zones`);
       if (res.ok) {
         const data = await res.json();
-        setZones(data);
+        setZones(Array.isArray(data) ? data : []);
       }
     } catch (err) {
       console.error(err);
@@ -71,6 +71,7 @@ export default function HostedZones() {
             href="/hosted-zones/create"
             className="aws-btn-primary flex items-center gap-2"
           >
+            <Plus size={16} />
             Create hosted zone
           </Link>
         </div>
@@ -85,7 +86,7 @@ export default function HostedZones() {
               placeholder="Find hosted zones"
               value={search}
               onChange={(e) => setSearch(e.target.value)}
-              className="aws-input pl-9"
+              className="aws-input !pl-9"
             />
           </div>
         </div>
