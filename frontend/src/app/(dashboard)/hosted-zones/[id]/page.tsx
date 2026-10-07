@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, useEffect, use, useCallback } from "react";
+import { useState, useEffect, use, useCallback, Suspense } from "react";
 import { useRouter } from "next/navigation";
 import { 
   Search, 
@@ -24,7 +24,7 @@ import Breadcrumbs from "@/components/Breadcrumbs";
 const RECORD_TYPES = ["All", "A", "AAAA", "CNAME", "MX", "TXT", "NS", "SOA", "PTR", "SRV", "CAA"];
 const PAGE_SIZES = [10, 25, 50, 100];
 
-export default function HostedZoneDetail({ params }: { params: Promise<{ id: string }> }) {
+function HostedZoneDetailContent({ params }: { params: Promise<{ id: string }> }) {
   const unwrappedParams = use(params);
   const zoneId = unwrappedParams.id;
   const { user } = useAuth();
@@ -1180,5 +1180,13 @@ export default function HostedZoneDetail({ params }: { params: Promise<{ id: str
         </div>
       )}
     </div>
+  );
+}
+
+export default function HostedZoneDetail(props: { params: Promise<{ id: string }> }) {
+  return (
+    <Suspense fallback={<div className="p-8 text-center text-[#414d5c]">Loading hosted zone...</div>}>
+      <HostedZoneDetailContent {...props} />
+    </Suspense>
   );
 }

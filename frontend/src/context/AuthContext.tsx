@@ -1,7 +1,7 @@
 "use client";
 
 import React, { createContext, useContext, useState, useEffect } from "react";
-import { useRouter, usePathname } from "next/navigation";
+import { useRouter } from "next/navigation";
 
 interface AuthContextType {
   user: any;
@@ -14,17 +14,19 @@ const AuthContext = createContext<AuthContextType | undefined>(undefined);
 export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
   const [user, setUser] = useState<any>(null);
   const router = useRouter();
-  const pathname = usePathname();
 
   useEffect(() => {
     // Check local storage for mock session
     const storedUser = localStorage.getItem("mock_aws_user");
     if (storedUser) {
       setUser(JSON.parse(storedUser));
-    } else if (pathname !== "/login" && pathname !== "/") {
-      router.push("/login");
+    } else {
+      const currentPath = typeof window !== "undefined" ? window.location.pathname : "";
+      if (currentPath !== "/login" && currentPath !== "/") {
+        router.push("/login");
+      }
     }
-  }, [pathname, router]);
+  }, [router]);
 
   const login = (email: string) => {
     const mockUser = { email, name: email.split("@")[0] };
