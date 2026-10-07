@@ -32,7 +32,7 @@ export default function CreateHostedZone() {
         const err = await res.json();
         setError(err.detail || "Failed to create hosted zone");
       }
-    } catch (err) {
+    } catch {
       setError("Network error occurred.");
     } finally {
       setLoading(false);

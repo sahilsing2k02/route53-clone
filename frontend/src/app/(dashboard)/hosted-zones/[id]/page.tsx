@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, useEffect, use } from "react";
+import { useState, useEffect, use, useCallback } from "react";
 import Link from "next/link";
 import { Search, Plus, Trash2, RefreshCw, ChevronLeft, ChevronRight, Pencil } from "lucide-react";
 import { useAuth } from "@/context/AuthContext";
@@ -54,7 +54,7 @@ export default function HostedZoneDetail({ params }: { params: Promise<{ id: str
   // Delete confirmation modal
   const [deleteTarget, setDeleteTarget] = useState<any>(null);
 
-  const fetchZoneDetails = async () => {
+  const fetchZoneDetails = useCallback(async () => {
     setLoading(true);
     try {
       const res = await fetch(`${process.env.NEXT_PUBLIC_API_URL || "http://127.0.0.1:8000"}/api/hosted-zones/${zoneId}`);
@@ -72,13 +72,13 @@ export default function HostedZoneDetail({ params }: { params: Promise<{ id: str
     } finally {
       setLoading(false);
     }
-  };
+  }, [zoneId, router, addNotification]);
 
   useEffect(() => {
     if (user) {
       fetchZoneDetails();
     }
-  }, [user, zoneId]);
+  }, [user, fetchZoneDetails]);
 
   const confirmDeleteRecord = (record: any) => {
     setDeleteTarget(record);

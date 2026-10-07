@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, useEffect } from "react";
+import { useState, useEffect, useCallback } from "react";
 import Link from "next/link";
 import { Search, Plus, Trash2, RefreshCw, ChevronLeft, ChevronRight } from "lucide-react";
 import { useAuth } from "@/context/AuthContext";
@@ -23,7 +23,7 @@ export default function HostedZones() {
   // Selection state
   const [selectedIds, setSelectedIds] = useState<Set<string>>(new Set());
 
-  const fetchZones = async () => {
+  const fetchZones = useCallback(async () => {
     setLoading(true);
     try {
       const res = await fetch(`${process.env.NEXT_PUBLIC_API_URL || "http://127.0.0.1:8000"}/api/hosted-zones`);
@@ -37,13 +37,13 @@ export default function HostedZones() {
     } finally {
       setLoading(false);
     }
-  };
+  }, [addNotification]);
 
   useEffect(() => {
     if (user) {
       fetchZones();
     }
-  }, [user]);
+  }, [user, fetchZones]);
 
   const handleDelete = async (id: string, name: string) => {
     if (confirm(`Are you sure you want to delete the hosted zone "${name}"? This will also delete all records in the zone.`)) {

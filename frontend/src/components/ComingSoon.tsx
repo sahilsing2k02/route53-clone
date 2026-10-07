@@ -1,6 +1,8 @@
 "use client";
 import { useAuth } from "@/context/AuthContext";
 
+import Link from "next/link";
+
 export default function ComingSoon({ title, description }: { title: string, description?: string }) {
   const { user } = useAuth();
   if (!user) return null;
@@ -24,9 +26,9 @@ export default function ComingSoon({ title, description }: { title: string, desc
           {description || "This feature is currently under development and will be available in a future update."}
         </p>
         <div className="flex gap-4">
-          <a href="/" className="aws-btn-secondary">
+          <Link href="/" className="aws-btn-secondary">
             Return to Dashboard
-          </a>
+          </Link>
         </div>
       </div>
     </div>
