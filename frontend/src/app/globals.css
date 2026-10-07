@@ -1,0 +1,42 @@
+@import "tailwindcss";
+@layer base {
+  :root {
+    --aws-header: #232F3E;
+    --aws-bg: #F2F3F3;
+    --aws-border: #D5DBDB;
+    --aws-border-dark: #879196;
+    --aws-primary: #EC7211;
+    --aws-primary-hover: #EB5F07;
+    --aws-text: #16191F;
+    --aws-text-muted: #545B64;
+    --aws-link: #0073BB;
+    --aws-link-hover: #003366;
+  }
+
+  body {
+    background-color: var(--aws-bg);
+    color: var(--aws-text);
+    font-family: "Helvetica Neue", Arial, sans-serif;
+  }
+}
+
+@layer utilities {
+  .aws-panel {
+    @apply bg-white border border-[#D5DBDB] shadow-sm rounded-sm;
+  }
+  .aws-btn-primary {
+    @apply bg-gradient-to-b from-[#f99237] to-[#EC7211] border border-[#EC7211] hover:from-[#EB5F07] hover:to-[#EB5F07] text-white font-bold py-[4px] px-[12px] text-sm rounded-[2px] shadow-sm transition-all active:shadow-inner;
+  }
+  .aws-btn-secondary {
+    @apply bg-gradient-to-b from-white to-[#FAFAFA] border border-[#879196] hover:bg-[#FAFAFA] text-[#16191F] font-bold py-[4px] px-[12px] text-sm rounded-[2px] shadow-sm transition-all active:shadow-inner;
+  }
+  .aws-input {
+    @apply w-full px-3 py-1.5 border border-[#879196] rounded-[2px] focus:outline-none focus:border-[#0073BB] focus:ring-1 focus:ring-[#0073BB] focus:shadow-[0_0_3px_rgba(0,115,187,0.5)] text-sm;
+  }
+  .aws-table-header {
+    @apply bg-[#FAFAFA] text-[#545B64] border-b border-t border-[#D5DBDB] text-left text-xs font-bold uppercase tracking-wider;
+  }
+  .aws-table-cell {
+    @apply px-4 py-3 border-r border-[#D5DBDB] border-b text-sm;
+  }
+}
