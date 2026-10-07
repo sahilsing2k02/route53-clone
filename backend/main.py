@@ -50,6 +50,13 @@ def delete_hosted_zone(zone_id: str, db: Session = Depends(get_db)):
         raise HTTPException(status_code=404, detail="Hosted zone not found")
     return db_zone
 
+@app.put("/api/hosted-zones/{zone_id}", response_model=schemas.HostedZone)
+def update_hosted_zone(zone_id: str, zone: schemas.HostedZoneCreate, db: Session = Depends(get_db)):
+    db_zone = crud.update_hosted_zone(db, zone_id=zone_id, zone=zone)
+    if db_zone is None:
+        raise HTTPException(status_code=404, detail="Hosted zone not found")
+    return db_zone
+
 @app.get("/api/hosted-zones/{zone_id}/records", response_model=list[schemas.ResourceRecord])
 def read_records(zone_id: str, skip: int = 0, limit: int = 100, db: Session = Depends(get_db)):
     records = crud.get_records(db, zone_id=zone_id, skip=skip, limit=limit)
@@ -66,6 +73,13 @@ def create_record(zone_id: str, record: schemas.ResourceRecordCreate, db: Sessio
 @app.delete("/api/records/{record_id}", response_model=schemas.ResourceRecord)
 def delete_record(record_id: int, db: Session = Depends(get_db)):
     db_record = crud.delete_record(db, record_id=record_id)
+    if db_record is None:
+        raise HTTPException(status_code=404, detail="Record not found")
+    return db_record
+
+@app.put("/api/records/{record_id}", response_model=schemas.ResourceRecord)
+def update_record(record_id: int, record: schemas.ResourceRecordCreate, db: Session = Depends(get_db)):
+    db_record = crud.update_record(db, record_id=record_id, record=record)
     if db_record is None:
         raise HTTPException(status_code=404, detail="Record not found")
     return db_record

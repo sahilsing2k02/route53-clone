@@ -16,7 +16,7 @@ class ResourceRecord(ResourceRecordBase):
     zone_id: str
 
     class Config:
-        orm_mode = True
+        from_attributes = True
 
 class HostedZoneBase(BaseModel):
     name: str
@@ -32,7 +32,7 @@ class HostedZone(HostedZoneBase):
     record_set_count: int
 
     class Config:
-        orm_mode = True
+        from_attributes = True
 
 class HostedZoneDetail(HostedZone):
     records: List[ResourceRecord] = []
