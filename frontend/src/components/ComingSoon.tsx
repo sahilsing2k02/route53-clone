@@ -44,7 +44,7 @@ export default function ComingSoon({
           <Link href="/hosted-zones" className="aws-btn-primary">
             <span>Go to Hosted zones</span>
           </Link>
-          <Link href="/" className="aws-btn-secondary">
+          <Link href="/dashboard" className="aws-btn-secondary">
             <ArrowLeft size={13} />
             <span>Return to Dashboard</span>
           </Link>

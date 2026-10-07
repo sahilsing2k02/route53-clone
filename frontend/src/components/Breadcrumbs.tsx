@@ -10,7 +10,7 @@ export interface BreadcrumbItem {
 
 export default function Breadcrumbs({ items }: { items: BreadcrumbItem[] }) {
   const allItems: BreadcrumbItem[] = [
-    { label: "Route 53", href: "/" },
+    { label: "Route 53", href: "/dashboard" },
     ...items,
   ];
 

@@ -52,7 +52,7 @@ export default function Header() {
     <header className="h-[40px] bg-[#16191F] text-white flex items-center justify-between px-3 text-[12px] sticky top-0 z-50 select-none border-b border-[#232F3E]">
       {/* Left: AWS Logo & Services */}
       <div className="flex items-center gap-3">
-        <Link href="/" className="flex items-center gap-1.5 hover:opacity-90 transition-opacity py-1 px-1">
+        <Link href="/dashboard" className="flex items-center gap-1.5 hover:opacity-90 transition-opacity py-1 px-1">
           {/* AWS Logo */}
           <div className="flex items-center font-black text-[15px] tracking-tight">
             <span className="text-[#FF9900]">AWS</span>
@@ -60,7 +60,7 @@ export default function Header() {
         </Link>
         <div className="h-4 w-[1px] bg-[#545B64] hidden sm:block"></div>
         <Link 
-          href="/" 
+          href="/dashboard" 
           className="text-white hover:text-[#FF9900] font-semibold text-[13px] hidden sm:flex items-center gap-1"
         >
           <span>Route 53</span>

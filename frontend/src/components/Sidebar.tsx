@@ -65,9 +65,9 @@ export default function Sidebar() {
           {/* Dashboard */}
           <div className="mb-1">
             <Link
-              href="/"
+              href="/dashboard"
               className={`flex items-center gap-2 px-4 py-2 border-l-[3px] transition-colors ${
-                pathname === "/"
+                pathname === "/dashboard"
                   ? "border-[#EC7211] bg-[#F2F3F3] font-bold text-[#16191F]"
                   : "border-transparent text-[#545B64] hover:text-[#16191F] hover:bg-[#FAFAFA]"
               }`}
