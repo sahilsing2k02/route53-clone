@@ -21,7 +21,7 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
     const storedUser = localStorage.getItem("mock_aws_user");
     if (storedUser) {
       setUser(JSON.parse(storedUser));
-    } else if (pathname !== "/login") {
+    } else if (pathname !== "/login" && pathname !== "/") {
       router.push("/login");
     }
   }, [pathname, router]);
@@ -31,7 +31,7 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
     setUser(mockUser);
     localStorage.setItem("mock_aws_user", JSON.stringify(mockUser));
     document.cookie = "mock_aws_session=true; path=/; max-age=86400";
-    router.push("/");
+    router.push("/dashboard");
   };
 
   const logout = () => {

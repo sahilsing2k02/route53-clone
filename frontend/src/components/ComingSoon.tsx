@@ -22,21 +22,21 @@ export default function ComingSoon({
 
       {/* Page Header */}
       <div className="mb-6">
-        <h1 className="text-[22px] font-bold text-[#16191F] tracking-tight">{title}</h1>
-        <p className="text-[13px] text-[#545B64] mt-0.5">
+        <h1 className="text-[22px] font-bold text-[#0f141a] tracking-tight">{title}</h1>
+        <p className="text-[13px] text-[#414d5c] mt-0.5">
           Amazon Route 53 service feature
         </p>
       </div>
       
       {/* Cloudscape Feature Placeholder Container */}
       <div className="aws-panel p-10 flex flex-col items-center justify-center text-center">
-        <div className="w-14 h-14 bg-[#F2F3F3] rounded-full flex items-center justify-center mb-4 border border-[#D5DBDB] text-[#545B64]">
-          <Construction size={24} className="text-[#EC7211]" />
+        <div className="w-14 h-14 bg-[#F2F3F3] rounded-full flex items-center justify-center mb-4 border border-[#D5DBDB] text-[#414d5c]">
+          <Construction size={24} className="text-[#0972d3]" />
         </div>
         
-        <h2 className="text-[16px] font-bold text-[#16191F] mb-2">{title} is in Development</h2>
+        <h2 className="text-[16px] font-bold text-[#0f141a] mb-2">{title} is in Development</h2>
         
-        <p className="text-[#545B64] text-[13px] max-w-lg mb-6 leading-relaxed">
+        <p className="text-[#414d5c] text-[13px] max-w-lg mb-6 leading-relaxed">
           {description || "This Route 53 feature is currently in preview and will be available in an upcoming service update. You can continue managing your Hosted Zones and DNS records."}
         </p>
         
@@ -44,7 +44,7 @@ export default function ComingSoon({
           <Link href="/hosted-zones" className="aws-btn-primary">
             <span>Go to Hosted zones</span>
           </Link>
-          <Link href="/" className="aws-btn-secondary">
+          <Link href="/dashboard" className="aws-btn-secondary">
             <ArrowLeft size={13} />
             <span>Return to Dashboard</span>
           </Link>

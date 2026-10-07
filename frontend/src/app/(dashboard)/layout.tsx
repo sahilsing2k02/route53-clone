@@ -1,5 +1,6 @@
 import Header from "@/components/Header";
-import Sidebar from "@/components/Sidebar";
+import ConsoleSubNav from "@/components/ConsoleSubNav";
+import MarketingFooter from "@/components/marketing/MarketingFooter";
 
 export default function DashboardLayout({
   children,
@@ -7,14 +8,14 @@ export default function DashboardLayout({
   children: React.ReactNode;
 }) {
   return (
-    <div className="flex flex-col min-h-screen">
+    <div className="relative flex min-h-screen flex-col bg-white">
+      <div aria-hidden className="absolute inset-x-0 top-0 h-[420px] bg-[linear-gradient(180deg,#a9f1f8_0%,#d2f8fb_50%,#ffffff_100%)]" />
       <Header />
-      <div className="flex flex-1 overflow-hidden">
-        <Sidebar />
-        <main className="flex-1 overflow-y-auto bg-[#F2F3F3]">
-          {children}
-        </main>
-      </div>
+      <ConsoleSubNav />
+      <main className="relative mx-auto w-full max-w-[1280px] flex-1 px-6 pb-16 pt-4 md:px-10">
+        {children}
+      </main>
+      <MarketingFooter />
     </div>
   );
 }
