@@ -17,16 +17,16 @@
 - [ ] Setup CORS and API error handling
 
 ## Phase 4 — Hosted Zones UI
-- [ ] Create Hosted Zones table view
-- [ ] Create Hosted Zone creation form
-- [ ] Implement delete zone modal
-- [ ] Connect UI to backend API
+- [x] Create Hosted Zones table view
+- [x] Create Hosted Zone creation form
+- [x] Implement delete zone modal
+- [x] Connect UI to backend API
 
 ## Phase 5 — DNS Records UI
-- [ ] Create DNS Records table view (within a specific Hosted Zone)
-- [ ] Create DNS Record creation form
-- [ ] Implement delete record modal
-- [ ] Connect UI to backend API
+- [x] Create DNS Records table view (within a specific Hosted Zone)
+- [x] Create DNS Record creation form
+- [x] Implement delete record modal
+- [x] Connect UI to backend API
 
 ## Phase 6 — Polish
 - [ ] Check UI/UX matches AWS Route53
