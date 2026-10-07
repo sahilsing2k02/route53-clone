@@ -30,12 +30,14 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
     const mockUser = { email, name: email.split("@")[0] };
     setUser(mockUser);
     localStorage.setItem("mock_aws_user", JSON.stringify(mockUser));
+    document.cookie = "mock_aws_session=true; path=/; max-age=86400";
     router.push("/");
   };
 
   const logout = () => {
     setUser(null);
     localStorage.removeItem("mock_aws_user");
+    document.cookie = "mock_aws_session=; path=/; expires=Thu, 01 Jan 1970 00:00:01 GMT";
     router.push("/login");
   };
 
