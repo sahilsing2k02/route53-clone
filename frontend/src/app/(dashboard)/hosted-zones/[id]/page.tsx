@@ -326,8 +326,8 @@ export default function HostedZoneDetail({ params }: { params: Promise<{ id: str
   if (!zone) return null;
 
   // Extract NS record values for summary
-  const nsRecord = records.find(r => r.type === "NS" && r.name === zone.name);
-  const nameServers = nsRecord ? nsRecord.value.split("\n").filter(Boolean) : [];
+  const nsRecord = records.find((r: any) => r.type === "NS" && r.name === zone.name);
+  const nameServers: string[] = nsRecord ? (nsRecord.value as string).split("\n").filter(Boolean) : [];
 
   return (
     <div className="p-6 max-w-7xl mx-auto">
@@ -434,7 +434,7 @@ export default function HostedZoneDetail({ params }: { params: Promise<{ id: str
               Name servers (NS):
             </div>
             <div className="flex-1 flex flex-wrap gap-x-6 gap-y-1 font-mono text-[12px] text-[#0073BB]">
-              {nameServers.map((ns, idx) => (
+              {nameServers.map((ns: string, idx: number) => (
                 <div key={idx} className="flex items-center gap-1">
                   <span className="text-[#879196]">{idx + 1}.</span>
                   <span>{ns}</span>
