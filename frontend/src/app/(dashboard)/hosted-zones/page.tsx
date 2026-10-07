@@ -32,6 +32,7 @@ export default function HostedZones() {
 
   const fetchZones = useCallback(async () => {
     setLoading(true);
+    setSelectedIds(new Set());
     try {
       const res = await fetch(`${process.env.NEXT_PUBLIC_API_URL || "http://127.0.0.1:8000"}/api/hosted-zones`);
       if (res.ok) {
@@ -327,7 +328,7 @@ export default function HostedZones() {
         </div>
 
         {/* Cloudscape Pagination Footer */}
-        <div className="p-3 bg-[#f9fafb] flex justify-between items-center text-[12px] text-[#414d5c] border-t border-[#D5DBDB]">
+        <div className="p-3 bg-[#f9fafb] flex flex-col sm:flex-row justify-between items-start sm:items-center gap-3 text-[12px] text-[#414d5c] border-t border-[#D5DBDB]">
           <div className="flex items-center gap-3">
             <span>
               {filteredZones.length === 0 ? "0 hosted zones" : `${startIndex + 1}-${Math.min(startIndex + pageSize, filteredZones.length)} of ${filteredZones.length} hosted zones`}

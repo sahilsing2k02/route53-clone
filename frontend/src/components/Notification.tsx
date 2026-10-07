@@ -59,23 +59,18 @@ const styleMap = {
 export function NotificationProvider({ children }: { children: React.ReactNode }) {
   const [notifications, setNotifications] = useState<NotificationItem[]>([]);
 
-  const addNotification = useCallback((type: NotificationType, message: string) => {
-    const id = Date.now().toString() + Math.random().toString(36).slice(2);
-    setNotifications((prev) => [...prev, { id, type, message, dismissible: true }]);
-  }, []);
-
   const removeNotification = useCallback((id: string) => {
     setNotifications((prev) => prev.filter((n) => n.id !== id));
   }, []);
 
-  // Auto-dismiss after 5 seconds
-  useEffect(() => {
-    if (notifications.length === 0) return;
-    const timer = setTimeout(() => {
-      setNotifications((prev) => prev.slice(1));
+  const addNotification = useCallback((type: NotificationType, message: string) => {
+    const id = Date.now().toString() + Math.random().toString(36).slice(2);
+    setNotifications((prev) => [...prev, { id, type, message, dismissible: true }]);
+    
+    setTimeout(() => {
+      removeNotification(id);
     }, 5000);
-    return () => clearTimeout(timer);
-  }, [notifications]);
+  }, [removeNotification]);
 
   return (
     <NotificationContext.Provider value={{ addNotification }}>

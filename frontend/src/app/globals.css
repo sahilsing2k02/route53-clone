@@ -79,6 +79,15 @@
   .aws-badge-type {
     @apply inline-flex items-center px-2 py-0.5 rounded-[6px] text-[12px] font-mono font-semibold bg-[#f2f3f3] text-[#414d5c] border border-[#d1d5db];
   }
+
+  .hide-scrollbar {
+    -ms-overflow-style: none;
+    scrollbar-width: none;
+  }
+  
+  .hide-scrollbar::-webkit-scrollbar {
+    display: none;
+  }
 }
 @keyframes slide-in {
   from {

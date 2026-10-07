@@ -49,7 +49,7 @@ export default function Header() {
   return (
     <header className="sticky top-0 z-50 w-full select-none">
       {/* Utility bar */}
-      <div className="bg-[#0f141a] text-white">
+      <div className="hidden sm:block bg-[#0f141a] text-white">
         <div className="mx-auto flex h-[34px] max-w-[1600px] items-center justify-end gap-6 px-6 text-[12px]">
           <span className="flex items-center gap-1">
             <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><circle cx="12" cy="12" r="10" /><path d="M2 12h20M12 2a15 15 0 0 1 0 20M12 2a15 15 0 0 0 0 20" /></svg>
@@ -104,9 +104,9 @@ export default function Header() {
 
       {/* Primary nav */}
       <div className="border-b border-[#e9ebed] bg-white text-[#0f141a]">
-        <div className="mx-auto flex h-[64px] max-w-[1600px] items-center gap-6 px-6">
-          <Link href="/dashboard" aria-label="AWS Route 53 home" className="flex items-center">
-            <img src={LOGO_DARK} alt="AWS" width={46} height={28} className="h-[28px] w-auto" />
+        <div className="mx-auto flex h-[64px] max-w-[1600px] items-center gap-3 sm:gap-6 px-4 sm:px-6">
+          <Link href="/dashboard" aria-label="AWS Route 53 home" className="flex items-center shrink-0">
+            <img src={LOGO_DARK} alt="AWS" width={46} height={28} className="h-[24px] sm:h-[28px] w-auto" />
           </Link>
           <div className="relative max-w-xl flex-1">
             <Search size={15} className="pointer-events-none absolute left-3.5 top-1/2 -translate-y-1/2 text-[#414d5c]" />
@@ -120,7 +120,7 @@ export default function Header() {
               Alt + S
             </span>
           </div>
-          <button onClick={logout} className="ml-auto rounded-full bg-[#0f141a] px-5 py-[9px] text-[14px] font-semibold text-white transition-colors hover:bg-[#2e3a4a]">
+          <button onClick={logout} className="ml-auto shrink-0 rounded-full bg-[#0f141a] px-4 sm:px-5 py-[7px] sm:py-[9px] text-[13px] sm:text-[14px] font-semibold text-white transition-colors hover:bg-[#2e3a4a]">
             Sign out
           </button>
         </div>

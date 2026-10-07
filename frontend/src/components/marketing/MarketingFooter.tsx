@@ -16,8 +16,8 @@ const SOCIAL = [
 export default function MarketingFooter() {
   return (
     <footer id="marketing-footer" className="bg-white pb-6">
-      <div className="mx-auto max-w-[1600px] rounded-[28px] bg-[#0f141a] px-8 pb-10 pt-12 text-white md:px-14">
-        <div className="mb-10 flex items-center justify-between">
+      <div className="mx-auto max-w-[1600px] rounded-[28px] bg-[#0f141a] px-6 sm:px-8 pb-10 pt-12 text-white md:px-14">
+        <div className="mb-10 flex flex-col sm:flex-row sm:items-center justify-between gap-4">
           <Link href="/login" className="rounded-full bg-white px-5 py-[9px] text-[13px] font-semibold text-[#0f141a] transition-colors hover:bg-[#e9ebed]">
             Create an AWS account
           </Link>
@@ -56,7 +56,7 @@ export default function MarketingFooter() {
               <span>© 2026, Amazon Web Services, Inc. or its affiliates. All rights reserved.</span>
             </div>
           </div>
-          <div className="flex items-center gap-4">
+          <div className="flex flex-wrap items-center gap-4">
             {SOCIAL.map((s) => (
               <a key={s.name} href="#" aria-label={s.name} className="text-white opacity-90 hover:opacity-100">
                 <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor"><path d={s.d} /></svg>

@@ -2,7 +2,7 @@ from fastapi import FastAPI, Depends, HTTPException
 from fastapi.middleware.cors import CORSMiddleware
 from sqlalchemy.orm import Session
 import crud, models, schemas
-from database import SessionLocal, engine
+from database import SessionLocal, engine, get_db
 
 models.Base.metadata.create_all(bind=engine)
 
@@ -16,13 +16,7 @@ app.add_middleware(
     allow_headers=["*"],
 )
 
-# Dependency
-def get_db():
-    db = SessionLocal()
-    try:
-        yield db
-    finally:
-        db.close()
+# Dependency imported from database.py
 
 @app.get("/api/hosted-zones", response_model=list[schemas.HostedZone])
 def read_hosted_zones(skip: int = 0, limit: int = 100, db: Session = Depends(get_db)):

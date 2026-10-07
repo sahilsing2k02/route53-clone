@@ -21,11 +21,11 @@ function SubNav() {
   return (
     <div className="pointer-events-none sticky top-[110px] z-40">
       <div className={`${CONTAINER} pt-3`}>
-        <div className="pointer-events-auto relative flex h-[54px] items-center rounded-[14px] bg-white px-7 shadow-[0_2px_12px_rgba(0,0,0,0.18)]">
-          <span className="mr-10 text-[15px] font-semibold text-[#0f141a]">Amazon Route 53</span>
-          <nav className="flex h-full items-stretch gap-7 text-[14px]" aria-label="Route 53 sections">
+        <div className="pointer-events-auto relative flex h-[54px] items-center overflow-x-auto hide-scrollbar rounded-[14px] bg-white px-4 md:px-7 shadow-[0_2px_12px_rgba(0,0,0,0.18)]">
+          <span className="mr-6 md:mr-10 shrink-0 text-[14px] md:text-[15px] font-semibold text-[#0f141a]">Amazon Route 53</span>
+          <nav className="flex h-full items-stretch gap-4 md:gap-7 text-[13px] md:text-[14px] shrink-0" aria-label="Route 53 sections">
             {SUBNAV_LINKS.map((l, i) => (
-              <div key={l.label} className="relative flex h-full items-stretch" onMouseLeave={() => l.dropdown && setMenu(false)}>
+              <div key={l.label} className="relative flex h-full items-stretch shrink-0" onMouseLeave={() => l.dropdown && setMenu(false)}>
                 <button
                   onClick={() => scrollToId(l.target)}
                   onMouseEnter={() => l.dropdown && setMenu(true)}

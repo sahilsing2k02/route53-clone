@@ -76,6 +76,7 @@ function HostedZoneDetailContent({ params }: { params: Promise<{ id: string }> }
 
   const fetchZoneDetails = useCallback(async () => {
     setLoading(true);
+    setSelectedIds(new Set());
     try {
       const res = await fetch(`${process.env.NEXT_PUBLIC_API_URL || "http://127.0.0.1:8000"}/api/hosted-zones/${zoneId}`);
       if (res.ok) {
@@ -731,7 +732,7 @@ function HostedZoneDetailContent({ params }: { params: Promise<{ id: string }> }
             </div>
 
             {/* Pagination Footer */}
-            <div className="p-3 bg-[#f9fafb] flex justify-between items-center text-[12px] text-[#414d5c] border-t border-[#D5DBDB]">
+            <div className="p-3 bg-[#f9fafb] flex flex-col sm:flex-row justify-between items-start sm:items-center gap-3 text-[12px] text-[#414d5c] border-t border-[#D5DBDB]">
               <div className="flex items-center gap-3">
                 <span>
                   {filteredRecords.length === 0 ? "0 records" : `${startIndex + 1}-${Math.min(startIndex + pageSize, filteredRecords.length)} of ${filteredRecords.length} records`}
