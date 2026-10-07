@@ -266,9 +266,17 @@ export default function HostedZoneDetail({ params }: { params: Promise<{ id: str
                     <td className="aws-table-cell whitespace-pre-wrap font-mono text-xs text-[#0073BB]">{record.value}</td>
                     <td className="aws-table-cell border-r-0">
                       {["NS", "SOA"].includes(record.type) && record.name === zone.name ? (
-                        <span className="text-[#545B64] text-xs italic">System</span>
+                        <div className="flex gap-3 items-center">
+                          <button
+                            onClick={() => openEditRecord(record)}
+                            className="text-[#0073BB] hover:underline flex items-center gap-1 font-bold"
+                          >
+                            Edit
+                          </button>
+                          <span className="text-[#545B64] text-xs italic">System</span>
+                        </div>
                       ) : (
-                        <div className="flex gap-3">
+                        <div className="flex gap-3 items-center">
                           <button
                             onClick={() => openEditRecord(record)}
                             className="text-[#0073BB] hover:underline flex items-center gap-1 font-bold"
