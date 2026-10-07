@@ -102,7 +102,19 @@ npm run dev
 
 ---
 
-## 5. Future Scope and Extensibility
+## 5. Assumptions, Mocked Data, and Limitations
+
+Since this project is a clone focused on replicating the UI/UX and management workflows of Route 53, certain backend systems were mocked or simplified for the scope of the presentation:
+
+1. **Simulated IAM Authentication:** True AWS IAM uses complex cryptographic signing and Cognito/STS tokens. In this clone, the authentication system is mocked. Any 12-digit account ID and basic credentials will grant access, and the session is simulated purely on the client-side via LocalStorage/Cookies.
+2. **Actual DNS Resolution:** The application acts as a Management Control Plane. It stores, validates, and manages DNS records in a SQLite database, but it does *not* bind to a live DNS server daemon (like BIND9 or CoreDNS) to actually propagate and resolve these records on the internet.
+3. **DNSSEC and Advanced Routing:** The DNSSEC tab is a UI mock that does not perform actual cryptographic zone signing. Similarly, advanced routing policies (like Latency or Geolocation) are stored as text metadata but do not perform active traffic shaping or ping health checks.
+4. **Database Engine:** AWS Route 53 uses a globally distributed, highly available proprietary database. For the sake of local portability and ease of installation, this project assumes a single-node SQLite database is sufficient to demonstrate the CRUD workflows.
+5. **Billing and Tags:** Cost allocation tags and billing metrics are presented as static placeholders to match the AWS console's look and feel, but are not tied to a real billing API.
+
+---
+
+## 6. Future Scope and Extensibility
 While this prototype successfully replicates the core workflow of Route 53, it sets a strong foundation for future enhancements:
 1. **DNSSEC Integration:** Add actual cryptographic key signing to the currently mocked DNSSEC tab.
 2. **Traffic Policies & Health Checks:** Implement visual traffic policy routing and endpoint monitoring dashboards.
@@ -110,5 +122,5 @@ While this prototype successfully replicates the core workflow of Route 53, it s
 
 ---
 
-## Conclusion
+## 7. Conclusion
 This Route 53 clone is a testament to strong full-stack fundamentals, encompassing everything from database integrity and backend API design to responsive, pixel-perfect frontend engineering. It successfully handles edge cases (like bulk cascading deletions and state desyncs) while providing an intuitive, professional user experience that mirrors industry-standard enterprise software.
