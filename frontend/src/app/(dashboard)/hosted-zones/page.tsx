@@ -2,14 +2,17 @@
 
 import { useState, useEffect, useCallback } from "react";
 import Link from "next/link";
-import { Search, Plus, Trash2, RefreshCw, ChevronLeft, ChevronRight } from "lucide-react";
+import { useRouter } from "next/navigation";
+import { Search, Plus, Trash2, RefreshCw, ChevronLeft, ChevronRight, ExternalLink, AlertTriangle } from "lucide-react";
 import { useAuth } from "@/context/AuthContext";
 import { useNotification } from "@/components/Notification";
+import Breadcrumbs from "@/components/Breadcrumbs";
 
 const PAGE_SIZES = [10, 25, 50, 100];
 
 export default function HostedZones() {
   const { user } = useAuth();
+  const router = useRouter();
   const { addNotification } = useNotification();
   const [zones, setZones] = useState<any[]>([]);
   const [search, setSearch] = useState("");
@@ -22,6 +25,10 @@ export default function HostedZones() {
 
   // Selection state
   const [selectedIds, setSelectedIds] = useState<Set<string>>(new Set());
+  
+  // Delete confirmation modal state
+  const [showDeleteModal, setShowDeleteModal] = useState(false);
+  const [isDeleting, setIsDeleting] = useState(false);
 
   const fetchZones = useCallback(async () => {
     setLoading(true);
@@ -33,7 +40,7 @@ export default function HostedZones() {
       }
     } catch (err) {
       console.error(err);
-      addNotification("error", "Failed to fetch hosted zones.");
+      addNotification("error", "Failed to fetch hosted zones from Route 53 API.");
     } finally {
       setLoading(false);
     }
@@ -45,49 +52,11 @@ export default function HostedZones() {
     }
   }, [user, fetchZones]);
 
-  const handleDelete = async (id: string, name: string) => {
-    if (confirm(`Are you sure you want to delete the hosted zone "${name}"? This will also delete all records in the zone.`)) {
-      try {
-        const res = await fetch(`${process.env.NEXT_PUBLIC_API_URL || "http://127.0.0.1:8000"}/api/hosted-zones/${id}`, {
-          method: "DELETE",
-        });
-        if (res.ok) {
-          addNotification("success", `Hosted zone "${name}" has been successfully deleted.`);
-          fetchZones();
-        } else {
-          addNotification("error", `Failed to delete hosted zone "${name}".`);
-        }
-      } catch (err) {
-        console.error(err);
-        addNotification("error", "Network error occurred while deleting.");
-      }
-    }
-  };
-
-  const handleBulkDelete = async () => {
-    if (selectedIds.size === 0) return;
-    if (!confirm(`Are you sure you want to delete ${selectedIds.size} hosted zone(s)? This will also delete all associated records.`)) return;
-
-    let deleted = 0;
-    for (const id of selectedIds) {
-      try {
-        const res = await fetch(`${process.env.NEXT_PUBLIC_API_URL || "http://127.0.0.1:8000"}/api/hosted-zones/${id}`, {
-          method: "DELETE",
-        });
-        if (res.ok) deleted++;
-      } catch (err) {
-        console.error(err);
-      }
-    }
-    addNotification("success", `Successfully deleted ${deleted} hosted zone(s).`);
-    setSelectedIds(new Set());
-    fetchZones();
-  };
-
   // Apply filters
   const filteredZones = zones.filter((z) => {
     const matchesSearch = z.name.toLowerCase().includes(search.toLowerCase()) ||
-      (z.comment && z.comment.toLowerCase().includes(search.toLowerCase()));
+      (z.comment && z.comment.toLowerCase().includes(search.toLowerCase())) ||
+      (z.id && z.id.toLowerCase().includes(search.toLowerCase()));
     const matchesType =
       typeFilter === "all" ||
       (typeFilter === "public" && !z.private_zone) ||
@@ -108,7 +77,7 @@ export default function HostedZones() {
 
   // Selection handlers
   const toggleSelectAll = () => {
-    if (selectedIds.size === paginatedZones.length) {
+    if (selectedIds.size === paginatedZones.length && paginatedZones.length > 0) {
       setSelectedIds(new Set());
     } else {
       setSelectedIds(new Set(paginatedZones.map((z) => z.id)));
@@ -122,159 +91,254 @@ export default function HostedZones() {
     setSelectedIds(next);
   };
 
+  const handleConfirmDelete = async () => {
+    if (selectedIds.size === 0) return;
+    setIsDeleting(true);
+
+    let successCount = 0;
+    for (const id of selectedIds) {
+      try {
+        const res = await fetch(`${process.env.NEXT_PUBLIC_API_URL || "http://127.0.0.1:8000"}/api/hosted-zones/${id}`, {
+          method: "DELETE",
+        });
+        if (res.ok) successCount++;
+      } catch (err) {
+        console.error(err);
+      }
+    }
+
+    setIsDeleting(false);
+    setShowDeleteModal(false);
+    setSelectedIds(new Set());
+    addNotification("success", `Successfully deleted ${successCount} hosted zone(s).`);
+    fetchZones();
+  };
+
+  const handleViewDetails = () => {
+    if (selectedIds.size === 1) {
+      const selectedId = Array.from(selectedIds)[0];
+      router.push(`/hosted-zones/${selectedId}`);
+    }
+  };
+
   if (!user) return null;
 
   return (
-    <div className="p-8 max-w-7xl mx-auto">
-      <div className="flex justify-between items-center mb-6">
+    <div className="p-6 max-w-7xl mx-auto">
+      {/* AWS Breadcrumbs */}
+      <Breadcrumbs items={[{ label: "Hosted zones" }]} />
+
+      {/* Page Header with Action Bar */}
+      <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4 mb-4">
         <div>
-          <h1 className="text-2xl font-bold text-[#16191F]">Hosted zones</h1>
-          <p className="text-sm text-[#545B64] mt-1">
+          <div className="flex items-center gap-2">
+            <h1 className="text-[22px] font-bold text-[#16191F] tracking-tight">Hosted zones</h1>
+            <span className="text-[13px] font-normal text-[#545B64]">({filteredZones.length})</span>
+          </div>
+          <p className="text-[13px] text-[#545B64] mt-0.5 max-w-2xl">
             A hosted zone is a container for records, which include information about how to route traffic for a domain and its subdomains.
           </p>
         </div>
-        <div className="flex gap-2 flex-shrink-0">
+
+        {/* Global Action Bar */}
+        <div className="flex items-center gap-2 flex-wrap">
           <button 
             onClick={fetchZones}
             className="aws-btn-icon"
             title="Refresh"
+            disabled={loading}
           >
             <RefreshCw size={14} className={loading ? "animate-spin" : ""} />
           </button>
-          {selectedIds.size > 0 && (
-            <button
-              onClick={handleBulkDelete}
-              className="aws-btn-secondary flex items-center gap-2 text-[#D13212]"
-            >
-              <Trash2 size={14} />
-              Delete ({selectedIds.size})
-            </button>
-          )}
+
+          <button
+            onClick={handleViewDetails}
+            disabled={selectedIds.size !== 1}
+            className="aws-btn-secondary"
+          >
+            View details
+          </button>
+
+          <button
+            onClick={() => setShowDeleteModal(true)}
+            disabled={selectedIds.size === 0}
+            className={selectedIds.size > 0 ? "aws-btn-danger" : "aws-btn-secondary"}
+          >
+            <Trash2 size={13} />
+            <span>Delete</span>
+            {selectedIds.size > 0 && <span>({selectedIds.size})</span>}
+          </button>
+
           <Link
             href="/hosted-zones/create"
-            className="aws-btn-primary flex items-center gap-2"
+            className="aws-btn-primary"
           >
-            <Plus size={16} />
-            Create hosted zone
+            <Plus size={14} />
+            <span>Create hosted zone</span>
           </Link>
         </div>
       </div>
 
-      <div className="aws-panel">
-        {/* Toolbar with search and filters */}
-        <div className="p-4 border-b border-[#D5DBDB] bg-[#FAFAFA] flex items-center gap-3 flex-wrap">
-          <div className="relative flex-1 min-w-[200px] max-w-md">
-            <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 text-[#545B64]" size={16} />
-            <input
-              type="text"
-              placeholder="Find hosted zones"
-              value={search}
-              onChange={(e) => setSearch(e.target.value)}
-              className="aws-input !pl-9"
-            />
+      {/* Main Table Container */}
+      <div className="aws-panel overflow-hidden">
+        {/* Filter / Search Bar */}
+        <div className="p-3 border-b border-[#D5DBDB] bg-[#FAFAFA] flex items-center justify-between gap-3 flex-wrap">
+          <div className="flex items-center gap-3 flex-1 min-w-[280px]">
+            <div className="relative flex-1 max-w-md">
+              <Search className="absolute left-2.5 top-1/2 transform -translate-y-1/2 text-[#545B64]" size={14} />
+              <input
+                type="text"
+                placeholder="Search hosted zones by name, ID, or description"
+                value={search}
+                onChange={(e) => setSearch(e.target.value)}
+                className="aws-input !pl-8 text-[13px]"
+              />
+              {search && (
+                <button 
+                  onClick={() => setSearch("")}
+                  className="absolute right-2 top-1/2 transform -translate-y-1/2 text-[#879196] hover:text-[#16191F] text-xs font-bold"
+                >
+                  ✕
+                </button>
+              )}
+            </div>
+
+            <div className="flex items-center gap-1.5">
+              <label className="text-[12px] font-bold text-[#545B64] uppercase">Type:</label>
+              <select
+                value={typeFilter}
+                onChange={(e) => setTypeFilter(e.target.value as any)}
+                className="aws-select text-[12px] py-1"
+              >
+                <option value="all">All types</option>
+                <option value="public">Public</option>
+                <option value="private">Private</option>
+              </select>
+            </div>
           </div>
-          <div className="flex items-center gap-2">
-            <label className="text-xs font-bold text-[#545B64] uppercase">Type:</label>
-            <select
-              value={typeFilter}
-              onChange={(e) => setTypeFilter(e.target.value as any)}
-              className="aws-select"
-            >
-              <option value="all">All types</option>
-              <option value="public">Public</option>
-              <option value="private">Private</option>
-            </select>
+
+          <div className="text-[12px] text-[#545B64]">
+            {selectedIds.size > 0 ? `${selectedIds.size} of ${filteredZones.length} selected` : `${filteredZones.length} total`}
           </div>
         </div>
         
         {/* Table */}
         <div className="overflow-x-auto">
-          <table className="w-full text-sm text-left border-collapse">
+          <table className="w-full text-[13px] text-left border-collapse">
             <thead>
               <tr>
-                <th className="aws-table-header px-4 py-3 border-r w-10">
+                <th className="aws-table-header w-10 text-center">
                   <input
                     type="checkbox"
                     checked={paginatedZones.length > 0 && selectedIds.size === paginatedZones.length}
                     onChange={toggleSelectAll}
-                    className="w-4 h-4 rounded border-[#879196] text-[#0073BB] focus:ring-[#0073BB]"
+                    aria-label="Select all hosted zones"
+                    className="w-3.5 h-3.5 rounded-[2px] border-[#879196] text-[#0073BB] focus:ring-[#0073BB] cursor-pointer"
                   />
                 </th>
-                <th className="aws-table-header px-4 py-3 border-r">Domain name</th>
-                <th className="aws-table-header px-4 py-3 border-r">Hosted zone ID</th>
-                <th className="aws-table-header px-4 py-3 border-r">Type</th>
-                <th className="aws-table-header px-4 py-3 border-r">Record count</th>
-                <th className="aws-table-header px-4 py-3 border-r">Description</th>
-                <th className="aws-table-header px-4 py-3">Actions</th>
+                <th className="aws-table-header">Domain name</th>
+                <th className="aws-table-header">Hosted zone ID</th>
+                <th className="aws-table-header">Type</th>
+                <th className="aws-table-header">Record count</th>
+                <th className="aws-table-header">Description</th>
               </tr>
             </thead>
             <tbody>
               {loading ? (
                 <tr>
-                  <td colSpan={7} className="px-4 py-8 text-center text-[#545B64]">Loading...</td>
+                  <td colSpan={6} className="px-4 py-12 text-center text-[#545B64]">
+                    <div className="flex items-center justify-center gap-2">
+                      <RefreshCw size={16} className="animate-spin text-[#EC7211]" />
+                      <span>Loading hosted zones...</span>
+                    </div>
+                  </td>
                 </tr>
               ) : paginatedZones.length === 0 ? (
                 <tr>
-                  <td colSpan={7} className="px-4 py-8 text-center text-[#545B64]">
-                    {zones.length === 0
-                      ? "No hosted zones found. Create a hosted zone to get started."
-                      : "No hosted zones match the current filter criteria."}
+                  <td colSpan={6} className="px-4 py-12 text-center text-[#545B64]">
+                    <div className="max-w-md mx-auto">
+                      <div className="text-[15px] font-bold text-[#16191F] mb-1">
+                        {zones.length === 0 ? "No hosted zones" : "No matches found"}
+                      </div>
+                      <p className="text-[13px] text-[#545B64] mb-4">
+                        {zones.length === 0
+                          ? "You don't have any hosted zones in Route 53. Create a hosted zone to start routing traffic."
+                          : "No hosted zones match the search and filter criteria. Try clearing filters."}
+                      </p>
+                      {zones.length === 0 ? (
+                        <Link href="/hosted-zones/create" className="aws-btn-primary">
+                          <Plus size={14} />
+                          <span>Create hosted zone</span>
+                        </Link>
+                      ) : (
+                        <button
+                          onClick={() => { setSearch(""); setTypeFilter("all"); }}
+                          className="aws-btn-secondary"
+                        >
+                          Clear filters
+                        </button>
+                      )}
+                    </div>
                   </td>
                 </tr>
               ) : (
-                paginatedZones.map((zone) => (
-                  <tr key={zone.id} className={`hover:bg-[#F2F3F3] ${selectedIds.has(zone.id) ? "bg-[#F1FAFF]" : ""}`}>
-                    <td className="aws-table-cell w-10">
-                      <input
-                        type="checkbox"
-                        checked={selectedIds.has(zone.id)}
-                        onChange={() => toggleSelect(zone.id)}
-                        className="w-4 h-4 rounded border-[#879196] text-[#0073BB] focus:ring-[#0073BB]"
-                      />
-                    </td>
-                    <td className="aws-table-cell font-bold">
-                      <Link href={`/hosted-zones/${zone.id}`} className="text-[#0073BB] hover:underline">
-                        {zone.name}
-                      </Link>
-                    </td>
-                    <td className="aws-table-cell font-mono text-xs text-[#545B64]">{zone.id}</td>
-                    <td className="aws-table-cell">
-                      <span className={`inline-flex items-center px-2 py-0.5 rounded text-xs font-bold ${
-                        zone.private_zone
-                          ? "bg-[#F1FAFF] text-[#0073BB] border border-[#0073BB]"
-                          : "bg-[#F2F8F0] text-[#1D8102] border border-[#1D8102]"
-                      }`}>
-                        {zone.private_zone ? "Private" : "Public"}
-                      </span>
-                    </td>
-                    <td className="aws-table-cell">{zone.record_set_count}</td>
-                    <td className="aws-table-cell text-[#545B64]">{zone.comment || "-"}</td>
-                    <td className="aws-table-cell border-r-0">
-                      <button
-                        onClick={() => handleDelete(zone.id, zone.name)}
-                        className="text-[#D13212] hover:underline flex items-center gap-1 font-bold text-xs"
-                      >
-                        <Trash2 size={14} /> Delete
-                      </button>
-                    </td>
-                  </tr>
-                ))
+                paginatedZones.map((zone) => {
+                  const isSelected = selectedIds.has(zone.id);
+                  return (
+                    <tr 
+                      key={zone.id} 
+                      className={`hover:bg-[#F2F3F3] transition-colors cursor-pointer ${isSelected ? "bg-[#F1FAFF]" : ""}`}
+                      onClick={() => toggleSelect(zone.id)}
+                    >
+                      <td className="aws-table-cell w-10 text-center" onClick={(e) => e.stopPropagation()}>
+                        <input
+                          type="checkbox"
+                          checked={isSelected}
+                          onChange={() => toggleSelect(zone.id)}
+                          aria-label={`Select ${zone.name}`}
+                          className="w-3.5 h-3.5 rounded-[2px] border-[#879196] text-[#0073BB] focus:ring-[#0073BB] cursor-pointer"
+                        />
+                      </td>
+                      <td className="aws-table-cell font-bold" onClick={(e) => e.stopPropagation()}>
+                        <Link 
+                          href={`/hosted-zones/${zone.id}`} 
+                          className="text-[#0073BB] hover:underline hover:text-[#00297A] inline-flex items-center gap-1"
+                        >
+                          <span>{zone.name}</span>
+                          <ExternalLink size={11} className="text-[#879196]" />
+                        </Link>
+                      </td>
+                      <td className="aws-table-cell font-mono text-[12px] text-[#545B64]">{zone.id}</td>
+                      <td className="aws-table-cell">
+                        {zone.private_zone ? (
+                          <span className="aws-badge-private">Private</span>
+                        ) : (
+                          <span className="aws-badge-public">Public</span>
+                        )}
+                      </td>
+                      <td className="aws-table-cell font-medium">{zone.record_set_count}</td>
+                      <td className="aws-table-cell text-[#545B64]">{zone.comment || "-"}</td>
+                    </tr>
+                  );
+                })
               )}
             </tbody>
           </table>
         </div>
 
-        {/* Pagination footer */}
-        <div className="p-3 bg-[#FAFAFA] flex justify-between items-center text-sm text-[#545B64] border-t border-[#D5DBDB]">
+        {/* Cloudscape Pagination Footer */}
+        <div className="p-3 bg-[#FAFAFA] flex justify-between items-center text-[12px] text-[#545B64] border-t border-[#D5DBDB]">
           <div className="flex items-center gap-3">
-            <span>{filteredZones.length} zone{filteredZones.length !== 1 ? "s" : ""}</span>
+            <span>
+              {filteredZones.length === 0 ? "0 hosted zones" : `${startIndex + 1}-${Math.min(startIndex + pageSize, filteredZones.length)} of ${filteredZones.length} hosted zones`}
+            </span>
             <span className="text-[#D5DBDB]">|</span>
-            <div className="flex items-center gap-1">
-              <label className="text-xs">Rows per page:</label>
+            <div className="flex items-center gap-1.5">
+              <label>Rows per page:</label>
               <select
                 value={pageSize}
                 onChange={(e) => setPageSize(parseInt(e.target.value))}
-                className="aws-select text-xs py-0.5 px-1 pr-6"
+                className="aws-select text-[11px] py-0.5 px-2 pr-6"
               >
                 {PAGE_SIZES.map((s) => (
                   <option key={s} value={s}>{s}</option>
@@ -282,27 +346,82 @@ export default function HostedZones() {
               </select>
             </div>
           </div>
+          
           <div className="flex items-center gap-2">
-            <span className="text-xs">
+            <span>
               Page {safeCurrentPage} of {totalPages}
             </span>
-            <button
-              onClick={() => setCurrentPage((p) => Math.max(1, p - 1))}
-              disabled={safeCurrentPage <= 1}
-              className="aws-btn-icon disabled:opacity-30 disabled:cursor-not-allowed"
-            >
-              <ChevronLeft size={16} />
-            </button>
-            <button
-              onClick={() => setCurrentPage((p) => Math.min(totalPages, p + 1))}
-              disabled={safeCurrentPage >= totalPages}
-              className="aws-btn-icon disabled:opacity-30 disabled:cursor-not-allowed"
-            >
-              <ChevronRight size={16} />
-            </button>
+            <div className="flex items-center gap-1">
+              <button
+                onClick={() => setCurrentPage((p) => Math.max(1, p - 1))}
+                disabled={safeCurrentPage <= 1}
+                className="aws-btn-icon disabled:opacity-30 disabled:cursor-not-allowed"
+                title="Previous page"
+              >
+                <ChevronLeft size={14} />
+              </button>
+              <button
+                onClick={() => setCurrentPage((p) => Math.min(totalPages, p + 1))}
+                disabled={safeCurrentPage >= totalPages}
+                className="aws-btn-icon disabled:opacity-30 disabled:cursor-not-allowed"
+                title="Next page"
+              >
+                <ChevronRight size={14} />
+              </button>
+            </div>
           </div>
         </div>
       </div>
+
+      {/* Delete Confirmation Modal (AWS Cloudscape style) */}
+      {showDeleteModal && (
+        <div className="fixed inset-0 bg-black/60 flex items-center justify-center z-[100] p-4 animate-in fade-in duration-150">
+          <div className="bg-white rounded-[2px] shadow-2xl w-full max-w-lg border border-[#D5DBDB]">
+            <div className="px-6 py-4 border-b border-[#D5DBDB] bg-[#FAFAFA] flex items-center justify-between">
+              <div className="flex items-center gap-2 text-[#D13212]">
+                <AlertTriangle size={18} />
+                <h2 className="text-[16px] font-bold text-[#16191F]">Delete hosted zone{selectedIds.size > 1 ? "s" : ""}?</h2>
+              </div>
+              <button 
+                onClick={() => setShowDeleteModal(false)} 
+                className="text-[#545B64] hover:text-[#16191F] text-sm"
+              >
+                ✕
+              </button>
+            </div>
+            
+            <div className="p-6">
+              <p className="text-[13px] text-[#16191F] mb-3">
+                Are you sure you want to delete <span className="font-bold">{selectedIds.size}</span> hosted zone{selectedIds.size > 1 ? "s" : ""}?
+              </p>
+              
+              <div className="bg-[#FDECE9] border-l-4 border-[#D13212] p-3 text-[12px] text-[#D13212] mb-4">
+                <span className="font-bold">Warning: </span>
+                Deleting a hosted zone permanently removes all associated DNS records. This action cannot be undone and DNS queries for this zone will no longer resolve.
+              </div>
+
+              <div className="flex justify-end gap-2 border-t border-[#EAEDED] pt-4">
+                <button
+                  type="button"
+                  onClick={() => setShowDeleteModal(false)}
+                  className="aws-btn-secondary"
+                  disabled={isDeleting}
+                >
+                  Cancel
+                </button>
+                <button
+                  type="button"
+                  onClick={handleConfirmDelete}
+                  disabled={isDeleting}
+                  className="aws-btn-danger-solid"
+                >
+                  {isDeleting ? "Deleting..." : "Delete"}
+                </button>
+              </div>
+            </div>
+          </div>
+        </div>
+      )}
     </div>
   );
 }

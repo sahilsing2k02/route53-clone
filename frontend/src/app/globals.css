@@ -1,50 +1,92 @@
 @import "tailwindcss";
+
 @layer base {
   :root {
     --aws-header: #232F3E;
+    --aws-header-secondary: #16191F;
     --aws-bg: #F2F3F3;
+    --aws-panel-bg: #FFFFFF;
     --aws-border: #D5DBDB;
+    --aws-border-subtle: #EAEDED;
     --aws-border-dark: #879196;
     --aws-primary: #EC7211;
     --aws-primary-hover: #EB5F07;
+    --aws-primary-active: #DD5404;
     --aws-text: #16191F;
     --aws-text-muted: #545B64;
     --aws-link: #0073BB;
-    --aws-link-hover: #003366;
+    --aws-link-hover: #00297A;
+    --aws-danger: #D13212;
+    --aws-danger-hover: #B02A0D;
+    --aws-success: #1D8102;
   }
 
   body {
     background-color: var(--aws-bg);
     color: var(--aws-text);
-    font-family: "Helvetica Neue", Arial, sans-serif;
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+    font-size: 13px;
+    line-height: 1.5;
+    -webkit-font-smoothing: antialiased;
   }
 }
 
 @layer utilities {
   .aws-panel {
-    @apply bg-white border border-[#D5DBDB] shadow-sm rounded-sm;
+    @apply bg-white border border-[#D5DBDB] rounded-[2px] shadow-none;
   }
+  
+  .aws-panel-header {
+    @apply px-5 py-3 border-b border-[#D5DBDB] bg-[#FAFAFA] flex items-center justify-between;
+  }
+
   .aws-btn-primary {
-    @apply bg-gradient-to-b from-[#f99237] to-[#EC7211] border border-[#EC7211] hover:from-[#EB5F07] hover:to-[#EB5F07] text-white font-bold py-[4px] px-[12px] text-sm rounded-[2px] shadow-sm transition-all active:shadow-inner;
+    @apply bg-[#EC7211] hover:bg-[#EB5F07] active:bg-[#DD5404] text-white font-bold py-[5px] px-[14px] text-[13px] rounded-[2px] border border-[#EC7211] transition-colors cursor-pointer inline-flex items-center justify-center gap-1.5 disabled:opacity-40 disabled:cursor-not-allowed select-none;
   }
+
   .aws-btn-secondary {
-    @apply bg-gradient-to-b from-white to-[#FAFAFA] border border-[#879196] hover:bg-[#FAFAFA] text-[#16191F] font-bold py-[4px] px-[12px] text-sm rounded-[2px] shadow-sm transition-all active:shadow-inner;
+    @apply bg-white hover:bg-[#F2F3F3] active:bg-[#EAEDED] text-[#16191F] font-bold py-[5px] px-[14px] text-[13px] rounded-[2px] border border-[#545B64] hover:border-[#16191F] transition-colors cursor-pointer inline-flex items-center justify-center gap-1.5 disabled:opacity-40 disabled:cursor-not-allowed select-none;
   }
-  .aws-input {
-    @apply w-full px-3 py-1.5 border border-[#879196] rounded-[2px] focus:outline-none focus:border-[#0073BB] focus:ring-1 focus:ring-[#0073BB] focus:shadow-[0_0_3px_rgba(0,115,187,0.5)] text-sm;
+
+  .aws-btn-danger {
+    @apply bg-white hover:bg-[#FDECE9] active:bg-[#F9D4CE] text-[#D13212] font-bold py-[5px] px-[14px] text-[13px] rounded-[2px] border border-[#D13212] transition-colors cursor-pointer inline-flex items-center justify-center gap-1.5 disabled:opacity-40 disabled:cursor-not-allowed select-none;
   }
-  .aws-table-header {
-    @apply bg-[#FAFAFA] text-[#545B64] border-b border-t border-[#D5DBDB] text-left text-xs font-bold uppercase tracking-wider;
+
+  .aws-btn-danger-solid {
+    @apply bg-[#D13212] hover:bg-[#B02A0D] active:bg-[#8F220A] text-white font-bold py-[5px] px-[14px] text-[13px] rounded-[2px] border border-[#D13212] transition-colors cursor-pointer inline-flex items-center justify-center gap-1.5 disabled:opacity-40 disabled:cursor-not-allowed select-none;
   }
-  .aws-table-cell {
-    @apply px-4 py-3 border-r border-[#D5DBDB] border-b text-sm;
-  }
+
   .aws-btn-icon {
-    @apply bg-transparent border border-transparent hover:border-[#879196] hover:bg-[#FAFAFA] text-[#545B64] hover:text-[#16191F] font-bold p-[6px] text-sm rounded-[2px] transition-all;
+    @apply bg-white hover:bg-[#F2F3F3] active:bg-[#EAEDED] text-[#545B64] hover:text-[#16191F] border border-[#879196] hover:border-[#16191F] p-[6px] text-[13px] rounded-[2px] transition-colors cursor-pointer inline-flex items-center justify-center disabled:opacity-40 disabled:cursor-not-allowed;
   }
+
+  .aws-input {
+    @apply w-full px-3 py-1.5 bg-white border border-[#879196] rounded-[2px] focus:outline-none focus:border-[#0073BB] focus:ring-1 focus:ring-[#0073BB] text-[13px] text-[#16191F] placeholder-[#879196] transition-colors;
+  }
+
   .aws-select {
-    @apply px-3 py-1.5 border border-[#879196] rounded-[2px] focus:outline-none focus:border-[#0073BB] focus:ring-1 focus:ring-[#0073BB] text-sm bg-white appearance-none bg-no-repeat bg-[length:16px_16px] bg-[right_8px_center] pr-8;
+    @apply px-3 py-1.5 bg-white border border-[#879196] rounded-[2px] focus:outline-none focus:border-[#0073BB] focus:ring-1 focus:ring-[#0073BB] text-[13px] text-[#16191F] appearance-none bg-no-repeat bg-[length:14px_14px] bg-[right_8px_center] pr-7 cursor-pointer;
     background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 16'%3E%3Cpath fill='%23545B64' d='M4.5 6L8 9.5 11.5 6z'/%3E%3C/svg%3E");
+  }
+
+  .aws-table-header {
+    @apply bg-[#FAFAFA] text-[#545B64] border-b border-[#D5DBDB] text-left text-[12px] font-bold uppercase tracking-wider py-2.5 px-4;
+  }
+
+  .aws-table-cell {
+    @apply px-4 py-2.5 border-b border-[#EAEDED] text-[13px] text-[#16191F];
+  }
+
+  .aws-badge-public {
+    @apply inline-flex items-center px-2 py-0.5 rounded-[2px] text-[11px] font-bold bg-[#F2F8F0] text-[#1D8102] border border-[#1D8102];
+  }
+
+  .aws-badge-private {
+    @apply inline-flex items-center px-2 py-0.5 rounded-[2px] text-[11px] font-bold bg-[#F1FAFF] text-[#0073BB] border border-[#0073BB];
+  }
+
+  .aws-badge-type {
+    @apply inline-flex items-center px-1.5 py-0.5 rounded-[2px] text-[11px] font-mono font-bold bg-[#F2F3F3] text-[#545B64] border border-[#D5DBDB];
   }
 }
 
@@ -60,5 +102,5 @@
 }
 
 .animate-slide-in {
-  animation: slide-in 0.3s ease-out;
+  animation: slide-in 0.25s ease-out;
 }
